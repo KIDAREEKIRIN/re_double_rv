@@ -2,15 +2,15 @@ package com.personal.re_double_rv.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DutyStep2 {
+public class DutyStep3{
 
     @SerializedName("step_id") private int step_id;
 
-    @SerializedName("step2") private String step2;
+    @SerializedName("step3") private String step3;
 
-    public DutyStep2(int step_id, String step2) {
+    public DutyStep3(int step_id, String step3) {
         this.step_id = step_id;
-        this.step2 = step2;
+        this.step3 = step3;
     }
 
     public int getStep_id() {
@@ -21,11 +21,11 @@ public class DutyStep2 {
         this.step_id = step_id;
     }
 
-    public String getStep2() {
-        return step2;
+    public String getStep3() {
+        return step3;
     }
 
-    public void setStep2(String step2) {
-        this.step2 = step2;
+    public void setStep3(String step3) {
+        this.step3 = step3;
     }
 }

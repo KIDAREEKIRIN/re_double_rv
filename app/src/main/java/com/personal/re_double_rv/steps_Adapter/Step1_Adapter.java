@@ -41,7 +41,7 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
     public Step1ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         step1Context = parent.getContext();
 
-        View view = LayoutInflater.from(step1Context).inflate(R.layout.layotu_sub_item,parent,false);
+        View view = LayoutInflater.from(step1Context).inflate(R.layout.layout_sub_item,parent,false);
 
         return new Step1ViewHolder(view);
     }

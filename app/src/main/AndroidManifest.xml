@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.personal.re_double_rv">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Re_double_rv"
         android:usesCleartextTraffic="true">
-<!--        android:usesCleartextTraffic="true" 이 부분이 있어야 http와 통신가능 (https는 없어도 됨?)>-->
+        <activity
+            android:name=".EditorActivity"
+            android:exported="true" />
+        <!-- android:usesCleartextTraffic="true" 이 부분이 있어야 http와 통신가능 (https는 없어도 됨?)> -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

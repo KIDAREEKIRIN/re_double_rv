@@ -1,5 +1,6 @@
 package com.personal.re_double_rv.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.personal.re_double_rv.models.DutyStep1;
 
@@ -7,9 +8,18 @@ import java.util.List;
 
 public class DutyTitle {
 
+    @Expose
     @SerializedName("title_id") private int title_id;
 
+    @Expose
     @SerializedName("title_name") private String title_name;
+
+    // CRUD 추가 내용.
+    @Expose
+    @SerializedName("success") private Boolean success;
+
+    @Expose
+    @SerializedName("message") private String message;
 
     private List<DutyStep1> dutyStep1List;
 
@@ -41,5 +51,21 @@ public class DutyTitle {
 
     public void setDutyStep1List(List<DutyStep1> dutyStep1List) {
         this.dutyStep1List = dutyStep1List;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

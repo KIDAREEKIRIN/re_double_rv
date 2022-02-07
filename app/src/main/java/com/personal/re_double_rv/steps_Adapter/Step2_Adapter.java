@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.personal.re_double_rv.R;
-import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class Step2_Adapter extends RecyclerView.Adapter<Step2_Adapter.Step2ViewH
     public Step2ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         step2Context = parent.getContext();
 
-        View view = LayoutInflater.from(step2Context).inflate(R.layout.layotu_sub_item,parent,false);
+        View view = LayoutInflater.from(step2Context).inflate(R.layout.layout_sub_item,parent,false);
 
         return new Step2ViewHolder(view);
     }

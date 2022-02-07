@@ -14,9 +14,11 @@ import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
+import com.personal.re_double_rv.models.DutyStep3;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Step1_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step2_Adapter;
+import com.personal.re_double_rv.steps_Adapter.Step3_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,8 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
     List<DutyTitle> dutyTitleList; // 메인 액티비티 리사이클러뷰에 들어갈 리스트.
     List<DutyStep1> dutyStep1List; // step1 리스트에 들어갈 리스트.
-    List<DutyStep2> dutyStep2List;
+    List<DutyStep2> dutyStep2List; // step2 리스트에 들어갈 리스트.
+    List<DutyStep3> dutyStep3List; // step3 리스트에 들어갈 리스트.
     private Context title_Adapter_Context;
     LinearLayoutManager linearLayoutManager;
 
@@ -66,6 +69,16 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         DutyTitle dutyTitle = dutyTitleList.get(position);
 //        DutyStep2 dutyStep2 = dutyStep2List.get(position);
         holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
+
+        // 길게 눌렀을 때, 삭제 넣기. 아직 Retrofit+php 통신 안됨.
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                remove(holder.getAbsoluteAdapterPosition());
+                return true;
+            }
+        });
+
 
         // DutyStep1에 대한 내용.
         GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -128,12 +141,57 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
             }
         });
+
+        // step3에 대한 내용.
+        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<DutyStep3>> callStep3 = getDataService3.getAllStep3();
+
+        callStep3.enqueue(new Callback<List<DutyStep3>>() {
+            @Override
+            public void onResponse(Call<List<DutyStep3>> call, Response<List<DutyStep3>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    dutyStep3List = response.body();
+
+                    // 자식 레이아웃 설정.
+                    linearLayoutManager = new LinearLayoutManager(
+                            holder.rv_step_item.getContext(),
+                            LinearLayoutManager.VERTICAL,
+                            false
+                    );
+                    // 시기별 업무 올리기.
+                    if(dutyTitle.getTitle_id() == 3) {
+                        Step3_Adapter step3_adapter = new Step3_Adapter(getStep3());
+//                        Step3_Adapter step3_adapter = new Step3_Adapter(getStep3());
+                        holder.rv_step_item.setLayoutManager(linearLayoutManager);
+                        holder.rv_step_item.setAdapter(step3_adapter);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutyStep3>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return dutyTitleList.size();
     }
+
+    // 삭제하기.
+    public void remove(int position) {
+        // 예외상황이 벌어졌을 때, 강제상황 실행.
+        try{
+            dutyTitleList.remove(position);
+            notifyItemRemoved(position);
+        } catch (IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+         }
+    }
+
 
     // 첫번째 메인 액티비티 리사이클러뷰 안의 카드뷰 안에 들어갈 리스트.
     // Step1.
@@ -150,11 +208,17 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         List<DutyStep2> step2List = new ArrayList<>();
         for (int i = 0; i < dutyStep2List.size(); i++){
              step2List.add(i,dutyStep2List.get(i));
-            if(dutyStep2List.get(i) == null) {
-                step2List.remove(i);
-            }
         }
         return step2List;
+    }
+
+    // Step3.
+    private List<DutyStep3> getStep3() {
+        List<DutyStep3> step3List = new ArrayList<>();
+        for (int i = 0; i < dutyStep3List.size(); i++){
+            step3List.add(i,dutyStep3List.get(i));
+        }
+        return step3List;
     }
 
 
