@@ -12,6 +12,9 @@ public class DutyTitle {
     @SerializedName("title_id") private int title_id;
 
     @Expose
+    @SerializedName("title_name_id") private int title_name_id;
+
+    @Expose
     @SerializedName("title_name") private String title_name;
 
     // CRUD 추가 내용.
@@ -23,8 +26,9 @@ public class DutyTitle {
 
     private List<DutyStep1> dutyStep1List;
 
-    public DutyTitle(int title_id, String title_name, List<DutyStep1> dutyStep1List) {
+    public DutyTitle(int title_id, int title_name_id ,String title_name, List<DutyStep1> dutyStep1List) {
         this.title_id = title_id;
+        this.title_name_id = title_name_id;
         this.title_name = title_name;
         this.dutyStep1List = dutyStep1List;
     }
@@ -35,6 +39,14 @@ public class DutyTitle {
 
     public void setTitle_id(int title_id) {
         this.title_id = title_id;
+    }
+
+    public int getTitle_name_id() {
+        return title_name_id;
+    }
+
+    public void setTitle_name_id(int title_name_id) {
+        this.title_name_id = title_name_id;
     }
 
     public String getTitle_name() {

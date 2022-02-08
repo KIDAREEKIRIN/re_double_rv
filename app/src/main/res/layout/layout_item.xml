@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_dutyTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#f3f3f3"
@@ -18,13 +19,53 @@
             android:layout_margin="12dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_duty_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12sp"
-                android:textSize="18sp"
-                android:text="Item Title"/>
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_duty_title_id"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:padding="12sp"
+                    android:text="1"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_duty_title"
+                    android:layout_width="235dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_duty_title_id"
+                    android:layout_weight="1"
+                    android:inputType="textMultiLine"
+                    android:padding="12sp"
+                    android:text="Item Title"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/ib_edit_Title"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_duty_title"
+                    android:layout_weight="1"
+                    android:background="#f3f3f3"
+                    android:src="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/ib_delete_Title"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/ib_edit_Title"
+                    android:background="#f3f3f3"
+                    android:src="@drawable/ic_delete" />
+
+
+
+
+            </RelativeLayout>
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_step_item"

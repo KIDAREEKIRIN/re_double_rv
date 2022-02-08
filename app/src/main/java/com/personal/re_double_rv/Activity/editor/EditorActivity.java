@@ -1,10 +1,9 @@
-package com.personal.re_double_rv;
+package com.personal.re_double_rv.Activity.editor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,9 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.personal.re_double_rv.R;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyTitle;
+import com.personal.re_double_rv.title_Adapter.Title_Adapter;
 
 import java.util.List;
 
@@ -68,36 +69,36 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
+    // 데이터 저장 retrofit 내용.
     private void saveNote(String title) {
 
-                    GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-                        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title);
+        GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title);
 
-                        callPostTitle.enqueue(new Callback<DutyTitle>() {
-                            @Override
-                            public void onResponse(@NonNull Call<DutyTitle> call, @NonNull Response<DutyTitle> response) {
-                                if(response.isSuccessful() && response.body() != null) {
-                                    Boolean success = response.body().getSuccess();
+        callPostTitle.enqueue(new Callback<DutyTitle>() {
+            @Override
+            public void onResponse(@NonNull Call<DutyTitle> call, @NonNull Response<DutyTitle> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    Boolean success = response.body().getSuccess();
+                    if(success) {
 
-                                    if(success) {
-                                        Toast.makeText(EditorActivity.this,
-                                                response.body().getMessage(),
-                                                Toast.LENGTH_SHORT).show();
-//                                        title_adapter.notifyDataSetChanged();
-                                        finish(); // back to main
-                                    } else {
-                                        Toast.makeText(EditorActivity.this,
-                                                response.body().getMessage(),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }
+                        Toast.makeText(EditorActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish(); // back to main
+                    } else {
+                        Toast.makeText(EditorActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
 
-                            @Override
-                            public void onFailure(Call<DutyTitle> call, Throwable t) {
+            @Override
+            public void onFailure(Call<DutyTitle> call, Throwable t) {
 
-                            }
-                        });
+            }
+        });
 
     }
 }

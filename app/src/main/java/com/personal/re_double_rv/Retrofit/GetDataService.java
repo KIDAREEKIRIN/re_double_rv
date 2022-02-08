@@ -36,4 +36,12 @@ public interface GetDataService {
     Call<DutyTitle> saveTitle(
             @Field("title_name") String title_name
     );
+
+    // 제목 수정 Post 관련.
+    @FormUrlEncoded
+    @POST("update_title.php")
+    Call<DutyTitle> updateTitle(
+            @Field("title_name_id") int title_name_id,
+            @Field("title_name") String title_name
+    );
 }
