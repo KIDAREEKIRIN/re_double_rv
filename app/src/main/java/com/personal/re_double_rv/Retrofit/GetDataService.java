@@ -44,4 +44,11 @@ public interface GetDataService {
             @Field("title_name_id") int title_name_id,
             @Field("title_name") String title_name
     );
+
+    // 제목 삭제 Post 관련.
+    @FormUrlEncoded
+    @POST("delete_title.php")
+    Call<DutyTitle> deleteTitle(
+            @Field("title_name_id") int title_name_id
+    );
 }

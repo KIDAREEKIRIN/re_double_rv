@@ -1,5 +1,6 @@
 package com.personal.re_double_rv.Activity.main;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,8 +43,21 @@ public class MainActivity extends Activity implements Main_View {
         setContentView(R.layout.activity_main);
 
         rv_title = findViewById(R.id.rv_title); // 리사이클러뷰
-        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-        rv_title.setLayoutManager(linearLayoutManager);
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this); // LinearLayoutManager
+        rv_title.setLayoutManager(linearLayoutManager); // 리사이클러뷰를 레이아웃에 붙이기.
+
+        // FAB 숨기기.
+        rv_title.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy <= 0) {
+                     fab.show();
+                } else {
+                    fab.hide();
+                }
+//                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
         // 추가 버튼을 누르면
         fab = findViewById(R.id.add_main); // 선언.
@@ -58,6 +72,7 @@ public class MainActivity extends Activity implements Main_View {
         });
 
         main_presenter = new Main_Presenter(this); // Main_Presenter 생성.
+//        title_adapter.notifyDataSetChanged();
         main_presenter.getData(); // DB에서 데이터 가져오기.
 
 

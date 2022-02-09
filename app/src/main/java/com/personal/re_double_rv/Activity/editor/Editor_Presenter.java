@@ -63,7 +63,31 @@ public class Editor_Presenter {
                         view.onRequestError(response.body().getMessage());
                     }
                 }
+            }
+            @Override
+            public void onFailure(Call<DutyTitle> call, Throwable t) {
+                view.onRequestError(t.getLocalizedMessage());
+            }
+        });
+    }
 
+    // Title 삭제하기.
+    public void deleteTitle(int title_name_id) {
+
+        GetDataService postDelete_Title = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<DutyTitle> callDelete_Title = postDelete_Title.deleteTitle(title_name_id);
+
+        callDelete_Title.enqueue(new Callback<DutyTitle>() {
+            @Override
+            public void onResponse(Call<DutyTitle> call, Response<DutyTitle> response) {
+                if(response.isSuccessful() && response.body().getSuccess() != null) {
+                    Boolean success = response.body().getSuccess();
+                    if(success) {
+//                        view.onRequestSuccess(response.body().getMessage());
+                    } else {
+                        view.onRequestError(response.body().getMessage());
+                    }
+                }
             }
 
             @Override
@@ -71,6 +95,5 @@ public class Editor_Presenter {
                 view.onRequestError(t.getLocalizedMessage());
             }
         });
-
     }
 }

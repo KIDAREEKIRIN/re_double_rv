@@ -1,17 +1,26 @@
 package com.personal.re_double_rv.title_Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.personal.re_double_rv.Activity.editor.Editor_Presenter;
+import com.personal.re_double_rv.Activity.editor.Editor_View;
+import com.personal.re_double_rv.Activity.main.MainActivity;
+import com.personal.re_double_rv.Activity.main.Main_Presenter;
+import com.personal.re_double_rv.Activity.main.Main_View;
 import com.personal.re_double_rv.R;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
@@ -30,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewHolder>{
+public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewHolder> implements Editor_View{
 
     List<DutyTitle> dutyTitleList; // 메인 액티비티 리사이클러뷰에 들어갈 리스트.
     List<DutyStep1> dutyStep1List; // step1 리스트에 들어갈 리스트.
@@ -42,19 +51,36 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     // 아이템 클릭 리스너.
     ItemClickListener itemClickListener;
 
+    // Editor_Presenter
+    Editor_Presenter editor_presenter;
+    Editor_View view;
+
     // 생성자 선언해서 건네주기. -> 메인으로.
     public Title_Adapter(List<DutyTitle> dutyTitleList, ItemClickListener itemClickListener) {
         this.dutyTitleList = dutyTitleList;
         this.itemClickListener = itemClickListener;
     }
 
+    @Override
+    public void onRequestSuccess(String message) {
+        Toast.makeText(title_Adapter_Context,
+                message,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestError(String message) {
+
+    }
+
     public class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tv_duty_title_id, tv_duty_title; // 업무 순서번호. 업무 제목.
-        ImageButton ib_edit_Title, ib_delete_Title;
+        ImageButton ib_edit_Title, ib_delete_Title; // 수정, 삭제.
         RecyclerView rv_step_item; // RecyclerView.
         CardView cv_dutyTitle; // 전체 카드뷰.
         ItemClickListener itemClickListener; // 클릭리스너.
+        Editor_Presenter editor_presenter;
 
         public TitleViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
             super(itemView);
@@ -66,6 +92,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
             cv_dutyTitle = itemView.findViewById(R.id.cv_dutyTitle); // 카드뷰
             rv_step_item = itemView.findViewById(R.id.rv_step_item); // 하위 리사이클러뷰.
+
 
             // 아이템 클릭 리스너.
             this.itemClickListener = itemClickListener;
@@ -89,22 +116,40 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Title_Adapter.TitleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Title_Adapter.TitleViewHolder holder, @SuppressLint("RecyclerView") int position) {
         DutyTitle dutyTitle = dutyTitleList.get(position);
 //        if(String.valueOf(dutyTitle.getTitle_name_id()) != null) 조건문은 나중에 다시 달기.
         holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
+        holder.ib_delete_Title.setTag(dutyTitle.getTitle_name_id()); // 삭제 태그 달기.
+        holder.ib_delete_Title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(title_Adapter_Context);
+                builder.setTitle("제목 삭제").setMessage("정말 삭제하시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editor_presenter = new Editor_Presenter(view);
+                        editor_presenter.deleteTitle(dutyTitleList.get(position).getTitle_name_id());
+                        remove(position);
+//                        notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+
+            }
+        });
 
         holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
 //        holder.cv_dutyTitle.setTag(dutyTitle.g); // CardView 에는 무엇을 붙일까???
 
-        // 길게 눌렀을 때, 삭제 넣기. 아직 Retrofit+php 통신 안됨.
-//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                remove(holder.getAbsoluteAdapterPosition());
-//                return true;
-//            }
-//        });
 
 
         // DutyStep1에 대한 내용.

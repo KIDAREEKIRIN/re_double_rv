@@ -104,17 +104,13 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
             }
         });
 
-
         // 확인 버튼 클릭시. -> 데이터 저장 + DB.
         btn_Popup_Ok = findViewById(R.id.btn_Popup_Ok);
         btn_Popup_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-
-
                 editor_presenter.saveTitle(title_name_edit); // duty_Title 저장.
-
                 finish();
             }
         });

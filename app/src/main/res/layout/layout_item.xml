@@ -43,14 +43,6 @@
                     android:text="Item Title"
                     android:textSize="18sp" />
 
-                <ImageButton
-                    android:id="@+id/ib_edit_Title"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/tv_duty_title"
-                    android:layout_weight="1"
-                    android:background="#f3f3f3"
-                    android:src="@drawable/ic_edit" />
 
                 <ImageButton
                     android:id="@+id/ib_delete_Title"
@@ -60,6 +52,14 @@
                     android:background="#f3f3f3"
                     android:src="@drawable/ic_delete" />
 
+                <ImageButton
+                    android:id="@+id/ib_edit_Title"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_duty_title"
+                    android:layout_weight="1"
+                    android:background="#f3f3f3"
+                    android:src="@drawable/ic_edit" />
 
 
 
