@@ -46,16 +46,15 @@ public class MainActivity extends Activity implements Main_View {
         linearLayoutManager = new LinearLayoutManager(MainActivity.this); // LinearLayoutManager
         rv_title.setLayoutManager(linearLayoutManager); // 리사이클러뷰를 레이아웃에 붙이기.
 
-        // FAB 숨기기.
+        // FAB 버튼을 리사이클러뷰 스크롤 시 보이기 + 사라지기.
         rv_title.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy <= 0) {
-                     fab.show();
+                     fab.show(); // 보이기.
                 } else {
-                    fab.hide();
+                    fab.hide(); // 안 보이기.
                 }
-//                super.onScrolled(recyclerView, dx, dy);
             }
         });
 

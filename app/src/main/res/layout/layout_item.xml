@@ -61,11 +61,7 @@
                     android:background="#f3f3f3"
                     android:src="@drawable/ic_edit" />
 
-
-
             </RelativeLayout>
-
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_step_item"
