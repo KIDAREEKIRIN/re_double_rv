@@ -89,7 +89,6 @@ public class Editor_Presenter {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<DutyTitle> call, Throwable t) {
                 view.onRequestError(t.getLocalizedMessage());
