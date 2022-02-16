@@ -46,7 +46,7 @@ public class EditorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_editor, menu);
+        inflater.inflate(R.menu.menu_fullpopup, menu);
         return true;
     }
 
@@ -59,7 +59,7 @@ public class EditorActivity extends AppCompatActivity {
 
                 String title = et_title.getText().toString().trim();
 
-                saveNote(title);
+//                saveNote(title);
 
                 return true;
 
@@ -70,10 +70,10 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     // 데이터 저장 retrofit 내용.
-    private void saveNote(String title) {
+    private void saveNote(int title_name_id, String title_name ) {
 
         GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title);
+        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name_id, title_name);
 
         callPostTitle.enqueue(new Callback<DutyTitle>() {
             @Override

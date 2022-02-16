@@ -13,8 +13,13 @@
         android:theme="@style/Theme.Re_double_rv"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Activity.editor.FullPopup_Activity"
-            android:exported="true" />
+            android:name=".Activity.Popup_Sub.Popup_Sub"
+            android:exported="true"
+            />
+        <activity
+            android:name=".Activity.Popup.FullPopupActivity"
+            android:exported="true"
+            /> <!-- singleTask 넣어봄. -->
         <activity
             android:name=".Activity.editor.Popup_Activity"
             android:exported="true"
@@ -27,6 +32,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

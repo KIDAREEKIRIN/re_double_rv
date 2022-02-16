@@ -13,8 +13,11 @@
         <entry key="app/src/main/res/layout/activity_full_popup.xml" value="0.4119791666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4354166666666667" />
         <entry key="app/src/main/res/layout/activity_popup.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/activity_popup_sub.xml" value="0.46041666666666664" />
         <entry key="app/src/main/res/layout/layotu_sub_item.xml" value="0.4354166666666667" />
+        <entry key="app/src/main/res/layout/layout_full_popup_item.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/layout/layout_item.xml" value="0.4354166666666667" />
+        <entry key="app/src/main/res/layout/layout_sub_item.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/menu/menu_editor.xml" value="0.48385416666666664" />
       </map>
     </option>

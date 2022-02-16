@@ -24,13 +24,13 @@ public class DutyTitle {
     @Expose
     @SerializedName("message") private String message;
 
-    private List<DutyStep1> dutyStep1List;
+    private List<DutyStep> dutyStepList;
 
-    public DutyTitle(int title_id, int title_name_id ,String title_name, List<DutyStep1> dutyStep1List) {
+    public DutyTitle(int title_id, int title_name_id ,String title_name, List<DutyStep> dutyStepList) {
         this.title_id = title_id;
         this.title_name_id = title_name_id;
         this.title_name = title_name;
-        this.dutyStep1List = dutyStep1List;
+        this.dutyStepList = dutyStepList;
     }
 
     public int getTitle_id() {
@@ -57,12 +57,12 @@ public class DutyTitle {
         this.title_name = title_name;
     }
 
-    public List<DutyStep1> getDutyStep1List() {
-        return dutyStep1List;
+    public List<DutyStep> getDutyStepList() {
+        return dutyStepList;
     }
 
-    public void setDutyStep1List(List<DutyStep1> dutyStep1List) {
-        this.dutyStep1List = dutyStep1List;
+    public void setDutyStepList(List<DutyStep> dutyStepList) {
+        this.dutyStepList = dutyStepList;
     }
 
     public Boolean getSuccess() {

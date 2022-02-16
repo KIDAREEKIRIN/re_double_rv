@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -22,14 +23,17 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.personal.re_double_rv.Activity.Popup.FullPopupActivity;
 import com.personal.re_double_rv.Activity.editor.Editor_Presenter;
 import com.personal.re_double_rv.Activity.editor.Editor_View;
+import com.personal.re_double_rv.Activity.editor.Popup_Activity;
 import com.personal.re_double_rv.Activity.main.MainActivity;
 import com.personal.re_double_rv.Activity.main.Main_Presenter;
 import com.personal.re_double_rv.Activity.main.Main_View;
 import com.personal.re_double_rv.R;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
+import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
@@ -45,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewHolder> implements Editor_View{
+public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewHolder> implements Editor_View, Main_View{
 
     List<DutyTitle> dutyTitleList; // 메인 액티비티 리사이클러뷰에 들어갈 리스트.
     List<DutyStep1> dutyStep1List; // step1 리스트에 들어갈 리스트.
@@ -60,13 +64,6 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     // Editor_Presenter
     Editor_Presenter editor_presenter;
     Editor_View view;
-
-    // RecyclerView 접기 / 펴기.
-    // Item의 클릭 상태를 저장할 array 객체.
-    private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    // 직전에 클릭됐던 Item의 position.
-    private int prePosition = -1;
-
     private static String TAG = "시작" ;
 
 
@@ -89,6 +86,37 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
     }
 
+    @Override
+    public void onGetResult(List<DutyTitle> dutyTitleList) {
+        // 아이템 클릭 리스너(데이터 수정)
+        itemClickListener = ((view, position) -> {
+
+            // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.
+            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
+            String title_name = dutyTitleList.get(position).getTitle_name();
+            // Intent로 넘기기.
+            Intent editTitle = new Intent(title_Adapter_Context, FullPopupActivity.class);
+            editTitle.putExtra("duty_Title_id",title_name_id);
+            editTitle.putExtra("duty_Title",title_name); // 넘길 duty_title 에 "Key" + "Value"
+            title_Adapter_Context.startActivity(editTitle);
+//            startActivityForResult(editTitle, INTENT_EDIT); // 수정 시 200;
+
+        });
+    }
+
+    @Override
+    public void onGetSteps(List<DutyStep> dutyStepList) {
+//        itemClickListener = ((view1, position) -> {
+//           int step_id = dutyStepList.get(position).getStep_id();
+//           String step = dutyStepList.get(position).getStep();
+//           // Intent로 넘기기.
+//            Intent editStep = new Intent(title_Adapter_Context, FullPopupActivity.class);
+//            editStep.putExtra("step_id",step_id);
+//            editStep.putExtra("step",step);
+//            title_Adapter_Context.startActivity(editStep);
+//        });
+    }
+
     // Title ViewHolder;
     public class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -100,7 +128,6 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         Editor_Presenter editor_presenter;
 
         // 카드뷰 클릭시 RecyclerView 펼치기 접기/
-        LinearLayout linearLayout;
 
         public TitleViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
             super(itemView);
@@ -108,16 +135,11 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
             tv_duty_title_id = itemView.findViewById(R.id.tv_duty_title_id); // duty_Title_id
             tv_duty_title = itemView.findViewById(R.id.tv_duty_title); // duty_Title
             ib_edit_Title = itemView.findViewById(R.id.ib_edit_Title); // 수정하기.
-            ib_delete_Title = itemView.findViewById(R.id.ib_delete_Title); // 지우기.
 
-            ib_downBtn = itemView.findViewById(R.id.ib_downBtn); // 펼치기.
-            ib_upBtn = itemView.findViewById(R.id.ib_upBtn); // 접기.
+            ib_delete_Title = itemView.findViewById(R.id.ib_delete_Title); // 지우기.
 
             cv_dutyTitle = itemView.findViewById(R.id.cv_dutyTitle); // 카드뷰
             rv_step_item = itemView.findViewById(R.id.rv_step_item); // 하위 리사이클러뷰.
-
-            linearLayout = itemView.findViewById(R.id.linearLayout);
-
 
             // 아이템 클릭 리스너.
             this.itemClickListener = itemClickListener;
@@ -143,8 +165,21 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     @Override
     public void onBindViewHolder(@NonNull Title_Adapter.TitleViewHolder holder, @SuppressLint("RecyclerView") int position) {
         DutyTitle dutyTitle = dutyTitleList.get(position);
-//        if(String.valueOf(dutyTitle.getTitle_name_id()) != null) 조건문은 나중에 다시 달기.
+
+        holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
         holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
+
+        holder.ib_edit_Title.setTag(dutyTitle.getTitle_name_id());
+        holder.ib_edit_Title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goFull = new Intent(title_Adapter_Context, FullPopupActivity.class);
+                goFull.putExtra("duty_Title_id",dutyTitleList.get(position).getTitle_id());
+                goFull.putExtra("duty_Title",dutyTitleList.get(position).getTitle_name());
+                title_Adapter_Context.startActivity(goFull);
+            }
+        });
+
         holder.ib_delete_Title.setTag(dutyTitle.getTitle_name_id()); // 삭제 태그 달기.
         holder.ib_delete_Title.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,55 +208,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
             }
         });
 
-        holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
 
-        holder.ib_downBtn.setTag(dutyTitle.getTitle_name_id());
-        holder.ib_upBtn.setTag(dutyTitle.getTitle_name_id());
-
-
-        holder.ib_downBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 펼쳐진 아이템을 클릭시.
-                if(selectedItems.get(position)) {
-                    // position 값을 지움.
-                    selectedItems.delete(position);
-                } else {
-                    // 직전의 클릭됐던 아이템의 클릭 상태를 지움.
-                    selectedItems.delete(prePosition);
-                    // 클릭한 아이템의 position을 저장.
-                    selectedItems.put(position,true);
-                }
-                // 해당 포지션의 값에 따라 보이기 안보이기.
-                if(!selectedItems.get(position)) {
-                    // LinearLayout 보이기.
-                    holder.linearLayout.setVisibility(View.VISIBLE);
-                    holder.ib_downBtn.setVisibility(View.GONE);
-                    holder.ib_upBtn.setVisibility(View.VISIBLE);
-                    holder.ib_upBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // LinearLayout 안 보이기.
-                            holder.linearLayout.setVisibility(View.GONE);
-                            holder.ib_downBtn.setVisibility(View.VISIBLE);
-                            holder.ib_upBtn.setVisibility(View.GONE);
-                        }
-                    });
-                }
-            }
-        });
-        // 카드뷰 클릭시 -> 펼치기 기능 달기.
-        // 뷰홀더에 아이템 클릭 리스너 달기.
-        holder.cv_dutyTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(title_Adapter_Context, "현재 포지션22 " + prePosition, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.linearLayout.setTag(dutyTitle.getTitle_id());
-
-//        holder.cv_dutyTitle.setTag(dutyTitle.ge); // CardView 에는 무엇을 붙일까???
 
         // DutyStep1에 대한 내용.
         GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -303,7 +290,6 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
                     // 시기별 업무 올리기.
                     if(dutyTitle.getTitle_id() == 3) {
                         Step3_Adapter step3_adapter = new Step3_Adapter(getStep3());
-//                        Step3_Adapter step3_adapter = new Step3_Adapter(getStep3());
                         holder.rv_step_item.setLayoutManager(linearLayoutManager);
                         holder.rv_step_item.setAdapter(step3_adapter);
                     }

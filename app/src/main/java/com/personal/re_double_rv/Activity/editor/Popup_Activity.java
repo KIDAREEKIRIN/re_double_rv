@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.personal.re_double_rv.Activity.main.Main_View;
 import com.personal.re_double_rv.R;
+import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import java.util.List;
@@ -110,7 +111,7 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
             @Override
             public void onClick(View v) {
                 String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-                editor_presenter.saveTitle(title_name_edit); // duty_Title 저장.
+                editor_presenter.saveTitle(id,title_name_edit); // duty_Title 저장.
                 finish();
             }
         });
@@ -178,6 +179,11 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
     // Main_View의 반환값.
     @Override
     public void onGetResult(List<DutyTitle> dutyTitleList) {
+
+    }
+
+    @Override
+    public void onGetSteps(List<DutyStep> dutyStepList) {
 
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +27,12 @@ public class FullPopup3_Adapter extends RecyclerView.Adapter<FullPopup3_Adapter.
 
     public class Step3_ViewHolder extends RecyclerView.ViewHolder {
 
-        EditText et_Popup_sub_step;
+        TextView tv_Popup_sub_step;
 
         public Step3_ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            et_Popup_sub_step = itemView.findViewById(R.id.et_Popup_sub_step);
+            tv_Popup_sub_step = itemView.findViewById(R.id.tv_Popup_sub_step);
         }
     }
 
@@ -49,7 +50,7 @@ public class FullPopup3_Adapter extends RecyclerView.Adapter<FullPopup3_Adapter.
     public void onBindViewHolder(@NonNull Step3_ViewHolder holder, int position) {
         DutyStep3 step3 = dutyStep3List.get(position);
 
-        holder.et_Popup_sub_step.setText(step3.getStep3());
+        holder.tv_Popup_sub_step.setText(step3.getStep3());
     }
 
     @Override

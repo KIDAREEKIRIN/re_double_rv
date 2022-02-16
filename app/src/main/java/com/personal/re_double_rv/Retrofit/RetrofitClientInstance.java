@@ -7,7 +7,7 @@ public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
 
-    private static final String BASE_URL = "http://3.37.249.79/";
+    private static final String BASE_URL = "http://3.37.249.79/sooryun/";
 
     public static Retrofit getRetrofitInstance() {
         if(retrofit == null) {

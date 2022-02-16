@@ -1,18 +1,27 @@
 package com.personal.re_double_rv.Popup_Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.personal.re_double_rv.Activity.Popup_Sub.Popup_Sub;
+import com.personal.re_double_rv.Activity.Popup_Sub.Popup_Sub_Presenter;
+import com.personal.re_double_rv.Activity.Popup_Sub.Popup_View;
 import com.personal.re_double_rv.R;
+import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyTitle;
@@ -21,48 +30,50 @@ import com.personal.re_double_rv.title_Adapter.Title_Adapter;
 
 import java.util.List;
 
-public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.FullPopup_Step1_ViewHolder> {
+public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.FullPopup_Step1_ViewHolder> implements Popup_View {
 
     private Context mContext;
 
     List<DutyStep1> dutyStep1List;
     ItemClickListener itemClickListener;
 
+    Popup_Sub_Presenter popup_sub_presenter;
+    Popup_View view;
+
     public FullPopup1_Adapter(List<DutyStep1> dutyStep1List) {
         this.dutyStep1List = dutyStep1List;
     }
 
-    public class FullPopup_Step1_ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Override
+    public void onRequestSuccess(String message) {
+
+    }
+
+    @Override
+    public void onRequestError(String message) {
+
+    }
+
+    @Override
+    public void onGetResult(List<DutyStep> dutyStepList) {
+
+    }
+
+    public class FullPopup_Step1_ViewHolder extends RecyclerView.ViewHolder{
 
         CardView cv_dutyStep;
-        EditText et_Popup_sub_step;
-        ImageButton ib_add_step;
-        ItemClickListener itemClickListener;
+        ImageButton ib_delete_Step;
+        TextView tv_Popup_sub_step;
 
         public FullPopup_Step1_ViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
             super(itemView);
 
             cv_dutyStep = itemView.findViewById(R.id.cv_dutyStep);
-            et_Popup_sub_step = itemView.findViewById(R.id.et_Popup_sub_step);
-            ib_add_step = itemView.findViewById(R.id.ib_add_step);
+            ib_delete_Step = itemView.findViewById(R.id.ib_delete_Step);
+            tv_Popup_sub_step = itemView.findViewById(R.id.tv_Popup_sub_step);
 
-            // 아이템 클릭 리스너.
-            this.itemClickListener = itemClickListener;
-            cv_dutyStep.setOnClickListener(this);
-            cv_dutyStep.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "클릭" + getAbsoluteAdapterPosition(), Toast.LENGTH_SHORT).show();;
-                }
-            });
-        }
-
-        @Override
-        public void onClick(View v) {
-            itemClickListener.onItemClick(v,getAbsoluteAdapterPosition()); // 클릭할 경우, View & Position 값.
         }
     }
-
 
     @NonNull
     @Override
@@ -76,26 +87,62 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FullPopup_Step1_ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FullPopup_Step1_ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         DutyStep1 step1 = dutyStep1List.get(position);
 
-        holder.et_Popup_sub_step.setText(step1.getStep1());
-        holder.ib_add_step.setTag(step1.getTitle_id());
+        holder.cv_dutyStep.setTag(step1.getStep_id());
+        holder.cv_dutyStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int step_id = dutyStep1List.get(position).getStep_id();
+                String step = dutyStep1List.get(position).getStep1();
 
-        if(step1.getTitle_id() == 1) {
-            holder.ib_add_step.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DutyStep1 step1 = new DutyStep1(dutyStep1List.size(),"",1);
-                    dutyStep1List.add(step1);
-                    notifyDataSetChanged();
-                }
-            });
-        }
+                Intent intent = new Intent(mContext,Popup_Sub.class);
+                intent.putExtra("step_id",step_id);
+                intent.putExtra("step",step);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.tv_Popup_sub_step.setText(step1.getStep1());
+
+        holder.ib_delete_Step.setTag(step1.getStep1());
+        holder.ib_delete_Step.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("제목 삭제").setMessage("정말 삭제하시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        popup_sub_presenter = new Popup_Sub_Presenter(view);
+                        popup_sub_presenter.deleteStep(dutyStep1List.get(position).getStep_id());
+                        remove(position);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
 
 
 
+    }
+
+    private void remove(int position) {
+        try{
+          dutyStep1List.remove(position);
+          notifyItemChanged(position);
+        } catch (IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+         }
     }
 
     @Override

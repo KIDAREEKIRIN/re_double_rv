@@ -19,7 +19,7 @@
             android:gravity="center|right"
 
             android:layout_weight="1"
-            android:text="제목              "
+            android:text="       내용               "
             android:textColor="#795548"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -30,15 +30,6 @@
             android:layout_height="match_parent"
             android:background="#EEA250"
             android:src="@drawable/ic_edit"
-            />
-
-        <ImageButton
-            android:id="@+id/ib_update_PopupBtn"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:background="#EEA250"
-            android:src="@drawable/ic_save"
-            android:visibility="gone"
             />
 
         <ImageButton
@@ -65,7 +56,7 @@
             android:layout_marginBottom="3dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:hint="       제목"
+            android:hint="       내용"
             android:minHeight="48dp"
             android:textColor="#000"
             android:textColorHint="#4F4444"

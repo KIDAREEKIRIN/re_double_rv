@@ -12,15 +12,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.personal.re_double_rv.Activity.Popup.FullPopup_View;
 import com.personal.re_double_rv.Activity.editor.Popup_Activity;
 import com.personal.re_double_rv.R;
+import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.title_Adapter.Title_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements Main_View {
+public class MainActivity extends Activity implements Main_View{
 
     private static final int INTENT_EDIT = 200; // 수정 시, 코드 200;
     private static final int INTENT_ADD = 100; // 추가 시, 코드 200;
@@ -103,6 +105,7 @@ public class MainActivity extends Activity implements Main_View {
                 Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void onGetResult(List<DutyTitle> dutyTitleList) {
         // 아이템 클릭 리스너(데이터 수정)
@@ -123,6 +126,11 @@ public class MainActivity extends Activity implements Main_View {
         title_adapter.notifyDataSetChanged();
         rv_title.setAdapter(title_adapter);
 
+
+    }
+
+    @Override
+    public void onGetSteps(List<DutyStep> dutyStepList) {
 
     }
 
