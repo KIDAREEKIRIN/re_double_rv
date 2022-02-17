@@ -22,9 +22,9 @@ public class Editor_Presenter {
     }
 
     // 제목 저장하기.
-    void saveTitle(int title_name_id, String title_name) {
+    void saveTitle(String title_name, int title_name_id) {
         GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name_id, title_name);
+        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name, title_name_id);
 
         callPostTitle.enqueue(new Callback<DutyTitle>() {
             @Override

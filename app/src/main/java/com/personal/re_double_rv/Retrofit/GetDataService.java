@@ -39,8 +39,8 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("save_title.php")
     Call<DutyTitle> saveTitle(
-            @Field("title_name_id") int title_name_id,
-            @Field("title_name") String title_name
+            @Field("title_name") String title_name,
+            @Field("title_name_id") int title_name_id
     );
 
     // 단계 추가 Post 관련.

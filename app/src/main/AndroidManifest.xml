@@ -15,10 +15,12 @@
         <activity
             android:name=".Activity.Popup_Sub.Popup_Sub"
             android:exported="true"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
             />
         <activity
             android:name=".Activity.Popup.FullPopupActivity"
             android:exported="true"
+
             /> <!-- singleTask 넣어봄. -->
         <activity
             android:name=".Activity.editor.Popup_Activity"

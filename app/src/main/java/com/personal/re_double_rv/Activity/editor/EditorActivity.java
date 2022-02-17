@@ -69,36 +69,36 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
-    // 데이터 저장 retrofit 내용.
-    private void saveNote(int title_name_id, String title_name ) {
+//    // 데이터 저장 retrofit 내용.
+//    private void saveNote(int title_name_id, String title_name ) {
+//
+//        GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name_id, title_name);
+//
+//        callPostTitle.enqueue(new Callback<DutyTitle>() {
+//            @Override
+//            public void onResponse(@NonNull Call<DutyTitle> call, @NonNull Response<DutyTitle> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    Boolean success = response.body().getSuccess();
+//                    if(success) {
+//
+//                        Toast.makeText(EditorActivity.this,
+//                                response.body().getMessage(),
+//                                Toast.LENGTH_SHORT).show();
+//                        finish(); // back to main
+//                    } else {
+//                        Toast.makeText(EditorActivity.this,
+//                                response.body().getMessage(),
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DutyTitle> call, Throwable t) {
+//
+//            }
+//        });
 
-        GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name_id, title_name);
-
-        callPostTitle.enqueue(new Callback<DutyTitle>() {
-            @Override
-            public void onResponse(@NonNull Call<DutyTitle> call, @NonNull Response<DutyTitle> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    Boolean success = response.body().getSuccess();
-                    if(success) {
-
-                        Toast.makeText(EditorActivity.this,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                        finish(); // back to main
-                    } else {
-                        Toast.makeText(EditorActivity.this,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DutyTitle> call, Throwable t) {
-
-            }
-        });
-
-    }
+//    }
 }

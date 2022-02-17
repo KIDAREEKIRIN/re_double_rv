@@ -28,6 +28,7 @@ import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.title_Adapter.ItemClickListener;
 import com.personal.re_double_rv.title_Adapter.Title_Adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.FullPopup_Step1_ViewHolder> implements Popup_View {
@@ -42,21 +43,6 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
 
     public FullPopup1_Adapter(List<DutyStep1> dutyStep1List) {
         this.dutyStep1List = dutyStep1List;
-    }
-
-    @Override
-    public void onRequestSuccess(String message) {
-
-    }
-
-    @Override
-    public void onRequestError(String message) {
-
-    }
-
-    @Override
-    public void onGetResult(List<DutyStep> dutyStepList) {
-
     }
 
     public class FullPopup_Step1_ViewHolder extends RecyclerView.ViewHolder{
@@ -90,6 +76,8 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
     public void onBindViewHolder(@NonNull FullPopup_Step1_ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         DutyStep1 step1 = dutyStep1List.get(position);
+//        dutyStep1List = new ArrayList<>();
+//        dutyStep1List.addAll()
 
         holder.cv_dutyStep.setTag(step1.getStep_id());
         holder.cv_dutyStep.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +95,7 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
 
         holder.tv_Popup_sub_step.setText(step1.getStep1());
 
+        // 삭제하기.
         holder.ib_delete_Step.setTag(step1.getStep1());
         holder.ib_delete_Step.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,10 +125,12 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
 
     }
 
+    // 삭제하기.
     private void remove(int position) {
         try{
           dutyStep1List.remove(position);
-          notifyItemChanged(position);
+          notifyDataSetChanged();
+//          notifyItemChanged(position);
         } catch (IndexOutOfBoundsException ex){
             ex.printStackTrace();
          }
@@ -148,6 +139,22 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
     @Override
     public int getItemCount() {
         return dutyStep1List.size();
+    }
+
+    @Override
+    public void onRequestSuccess(String message) {
+        Toast.makeText(mContext, "성공", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestError(String message) {
+        Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onGetResult(List<DutyStep> dutyStepList) {
+
     }
 
 

@@ -105,8 +105,6 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         duty_Title = intent.getStringExtra("duty_Title");
         tv_duty_title.setText(duty_Title);
 
-
-
         // 리사이클러뷰.
         rv_step_item = findViewById(R.id.rv_step_item);
         rv_step_item.setHasFixedSize(true);
@@ -121,6 +119,9 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
             public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
                 if(response.isSuccessful() && response.body() != null) {
                     dutyStep1List = response.body();
+
+//                    dutyStep1List = new ArrayList<>();
+//                    dutyStep1List.addAll(getStep1());
 
                     if(duty_Title_id == 1){
                         fullPopup_1_adapter = new FullPopup1_Adapter(getStep1());
@@ -209,13 +210,6 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //
-    }
-
     // 데이터를 다시 살려줘야한다.
     @Override
     protected void onResume() {
@@ -294,6 +288,7 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
             }
         });
 
+
 //        fab = findViewById(R.id.add_subItem);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -329,7 +324,7 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 //            String title_name = dutyTitleList.get(position).getTitle_name();
             // Intent로 넘기기.
             Intent editStep = new Intent(FullPopupActivity.this, Popup_Sub.class);
-            editStep.putExtra("title_id_value",title_id_value+1);
+            editStep.putExtra("title_id_value",title_id_value);
             editStep.putExtra("step_id",step_id);
             editStep.putExtra("step",step);
             startActivity(editStep);

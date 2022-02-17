@@ -4,10 +4,12 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,7 +22,7 @@ import com.personal.re_double_rv.models.DutyStep;
 
 import java.util.List;
 
-public class Popup_Sub extends AppCompatActivity implements Popup_View{
+public class Popup_Sub extends Activity implements Popup_View {
 
     EditText et_txtText; // 추가할 내용.
     ImageButton ib_cancel_PopupBtn, ib_resetBtn, ib_edit_PopupBtn; // 창 닫기, 내용 다시 쓰기.
@@ -38,6 +40,8 @@ public class Popup_Sub extends AppCompatActivity implements Popup_View{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 타이틀 바 없애기
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popup_sub);
 
         et_txtText = findViewById(R.id.et_txtText);
@@ -83,7 +87,7 @@ public class Popup_Sub extends AppCompatActivity implements Popup_View{
             @Override
             public void onClick(View v) {
                 String step = et_txtText.getText().toString(); // EditText의 값을 저장한다.
-
+//                popup_sub_presenter = new Popup_Sub_Presenter(view);
                 popup_sub_presenter.saveStep(step, title_id_value);
 
                 finish();
@@ -100,7 +104,7 @@ public class Popup_Sub extends AppCompatActivity implements Popup_View{
             public void onClick(View v) {
 
                 String title_name = et_txtText.getText().toString();
-                popup_sub_presenter.updateStep(step_id,title_name);
+                popup_sub_presenter.updateStep(step_id, title_name);
                 finish();
             }
         });
@@ -108,12 +112,12 @@ public class Popup_Sub extends AppCompatActivity implements Popup_View{
 
     @Override
     public void onRequestSuccess(String message) {
-        Toast.makeText(Popup_Sub.this, "성공", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Popup_Sub.this, "단계 성공", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRequestError(String message) {
-        Toast.makeText(Popup_Sub.this, "실패", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Popup_Sub.this, "단계 실패", Toast.LENGTH_SHORT).show();
     }
 
     @Override

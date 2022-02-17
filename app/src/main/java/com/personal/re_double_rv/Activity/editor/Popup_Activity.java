@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Popup_Activity extends Activity implements Editor_View, Main_View {
 
-    EditText editText_Title; // EditText 선언.
+    EditText et_idText,editText_Title ; // 번호.EditText 선언. ,
     Button btn_Popup_Ok, btn_Popup_Update; // "확인" 버튼 선언. "수정" 버튼.
     ImageButton ib_resetBtn, ib_cancel_PopupBtn, ib_edit_PopupBtn, ib_update_PopupBtn; // EditText reset, 팝업창 닫기, 수정하기.
     Editor_Presenter editor_presenter; // Editor_Presenter 받아오기.
@@ -37,6 +37,7 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popup);
 
+        et_idText = findViewById(R.id.et_idText);// 번호.
         editText_Title = findViewById(R.id.et_txtText); // 추가할 내용.
 
         // Editor_Presenter 객체 생성.
@@ -87,8 +88,9 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
                 btn_Popup_Update.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int title_name_id = Integer.parseInt(et_idText.getText().toString());
                         String title_name_edit = editText_Title.getText().toString();
-                        editor_presenter.updateTitle(id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                        editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
                         finish();
                     }
                 });
@@ -99,8 +101,9 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_update_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int title_name_id = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString();
-                editor_presenter.updateTitle(id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
                 finish();
             }
         });
@@ -110,8 +113,9 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         btn_Popup_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int title_name_id = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-                editor_presenter.saveTitle(id,title_name_edit); // duty_Title 저장.
+                editor_presenter.saveTitle(title_name_edit,title_name_id); // duty_Title 저장.
                 finish();
             }
         });
