@@ -1,9 +1,11 @@
 package com.personal.re_double_rv.steps_Adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,12 +29,13 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
     // StepsViewHolder 클래스.
     public class Step1ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_sub_step;
+//        TextView tv_sub_step;
+        CheckedTextView ct_sub_step;
 
         public Step1ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_sub_step = itemView.findViewById(R.id.tv_sub_step);
+            ct_sub_step = itemView.findViewById(R.id.ct_sub_step);
         }
     }
 
@@ -50,7 +53,19 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
     public void onBindViewHolder(@NonNull Step1ViewHolder holder, int position) {
 
         DutyStep1 step1 = dutyStep1List.get(position);
-        holder.tv_sub_step.setText(step1.getStep1());
+        holder.ct_sub_step.setText(step1.getStep1());
+        holder.ct_sub_step.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.ct_sub_step.toggle();
+                if(holder.ct_sub_step.isChecked()) {
+                    holder.ct_sub_step.setPaintFlags(holder.ct_sub_step.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.ct_sub_step.setPaintFlags(0);
+                }
+            }
+        });
+
 
     }
 

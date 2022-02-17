@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,12 +28,12 @@ public class Step2_Adapter extends RecyclerView.Adapter<Step2_Adapter.Step2ViewH
     // StepsViewHolder 클래스.
     public class Step2ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_sub_step;
-
+//        TextView tv_sub_step;
+        CheckedTextView ct_sub_step;
         public Step2ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_sub_step = itemView.findViewById(R.id.tv_sub_step);
+            ct_sub_step = itemView.findViewById(R.id.ct_sub_step);
         }
     }
 
@@ -50,7 +51,7 @@ public class Step2_Adapter extends RecyclerView.Adapter<Step2_Adapter.Step2ViewH
     public void onBindViewHolder(@NonNull Step2ViewHolder holder, int position) {
 
         DutyStep2 step2 = dutyStep2List.get(position);
-        holder.tv_sub_step.setText(step2.getStep2());
+        holder.ct_sub_step.setText(step2.getStep2());
 
     }
 
