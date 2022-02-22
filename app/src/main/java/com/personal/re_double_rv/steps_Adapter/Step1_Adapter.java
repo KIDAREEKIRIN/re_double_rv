@@ -2,6 +2,7 @@ package com.personal.re_double_rv.steps_Adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
 //        TextView tv_sub_step;
         CheckedTextView ct_sub_step;
 
+
         public Step1ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -54,13 +56,19 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
 
         DutyStep1 step1 = dutyStep1List.get(position);
         holder.ct_sub_step.setText(step1.getStep1());
+        // CheckedTextView 클릭시,
         holder.ct_sub_step.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 체크박스 체크 표시.
                 holder.ct_sub_step.toggle();
+                // CheckBox 체크 되면.
                 if(holder.ct_sub_step.isChecked()) {
+                    // 해당 항목 가운데 취소선 표시.
                     holder.ct_sub_step.setPaintFlags(holder.ct_sub_step.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    Log.d("체크박스 클릭", "onClick: ");
                 } else {
+                    // 다시 클릭하면 취소선 풀어짐.
                     holder.ct_sub_step.setPaintFlags(0);
                 }
             }
