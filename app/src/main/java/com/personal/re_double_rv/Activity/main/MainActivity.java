@@ -17,6 +17,7 @@ import com.personal.re_double_rv.Activity.editor.Popup_Activity;
 import com.personal.re_double_rv.R;
 import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyTitle;
+import com.personal.re_double_rv.title_Adapter.ItemClickListener;
 import com.personal.re_double_rv.title_Adapter.Title_Adapter;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MainActivity extends Activity implements Main_View{
     RecyclerView rv_title; // 리사이클러뷰(전체) 선언.
     LinearLayoutManager linearLayoutManager; // 리니어 레이아웃 선언
     Title_Adapter title_adapter; // 첫번째 어댑터
-    Title_Adapter.ItemClickListener itemClickListener;
+    ItemClickListener itemClickListener;
 
     List<DutyTitle> dutyTitleList; // 이게 데이터가 있을 지 모르겠음.. (역시나 없음).
 
@@ -112,10 +113,12 @@ public class MainActivity extends Activity implements Main_View{
         itemClickListener = ((view, position) -> {
 
             // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.
+            int title_id = dutyTitleList.get(position).getTitle_id();
             int title_name_id = dutyTitleList.get(position).getTitle_name_id();
             String title_name = dutyTitleList.get(position).getTitle_name();
             // Intent로 넘기기.
             Intent editTitle = new Intent(MainActivity.this, Popup_Activity.class);
+            editTitle.putExtra("title_id",title_id);
             editTitle.putExtra("title_name_id",title_name_id);
             editTitle.putExtra("title_name",title_name); // 넘길 duty_title 에 "Key" + "Value"
             startActivityForResult(editTitle, INTENT_EDIT); // 수정 시 200;

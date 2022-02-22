@@ -39,8 +39,8 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("save_title.php")
     Call<DutyTitle> saveTitle(
-            @Field("title_name") String title_name,
-            @Field("title_name_id") int title_name_id
+            @Field("title_name_id") int title_name_id,
+            @Field("title_name") String title_name
     );
 
     // 단계 추가 Post 관련.
@@ -55,6 +55,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("update_title.php")
     Call<DutyTitle> updateTitle(
+            @Field("title_id") int title_id,
             @Field("title_name_id") int title_name_id,
             @Field("title_name") String title_name
     );

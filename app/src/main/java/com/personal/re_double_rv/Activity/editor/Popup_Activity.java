@@ -3,6 +3,7 @@ package com.personal.re_double_rv.Activity.editor;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,8 +28,8 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
 
 //    String edit_dutyTitle;
 
-    int id; // 넘어온 Duty_Title_Id;
-    String name; // 넘어온 Duty_Title;
+    int id, title_id; // 넘어온 Duty_Title_Id+ title_id;
+    String name; // 넘어온 Duty_Title
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
 
         // Activity에서 넘긴 Intent 값 받기.
         Intent intent = getIntent();
+        title_id = intent.getIntExtra("title_id",0);
         id = intent.getIntExtra("title_name_id",0);
         name = intent.getStringExtra("title_name");
 
@@ -90,7 +92,7 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
                     public void onClick(View v) {
                         int title_name_id = Integer.parseInt(et_idText.getText().toString());
                         String title_name_edit = editText_Title.getText().toString();
-                        editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                        editor_presenter.updateTitle(title_id,title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
                         finish();
                     }
                 });
@@ -101,9 +103,11 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_update_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editMode();
                 int title_name_id = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString();
-                editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                editor_presenter.updateTitle(title_id,title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                Log.d("수정 버튼", "onClick: "+ title_name_id + title_name_edit);
                 finish();
             }
         });
@@ -115,7 +119,8 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
             public void onClick(View v) {
                 int title_name_id = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-                editor_presenter.saveTitle(title_name_edit,title_name_id); // duty_Title 저장.
+                editor_presenter.saveTitle(title_name_id,title_name_edit); // duty_Title 저장.
+                Log.d("확인 버튼", "onClick: "+ title_name_id + title_name_edit);
                 finish();
             }
         });
@@ -126,6 +131,7 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
 
         if ( id != 0 ) {
             // 추가할 내용의 EditText 에 Intent로 받아온 title_name 값을 넣는다.
+//            et_idText.setText(id);
             editText_Title.setText(name);
             readMode();
         } else {

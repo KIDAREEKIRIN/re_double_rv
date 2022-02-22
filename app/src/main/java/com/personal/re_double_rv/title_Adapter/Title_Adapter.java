@@ -311,16 +311,17 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
 
     // ItemClickListener 아이템 클릭 리스너.
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
+//    public interface ItemClickListener {
+//        void onItemClick(View view, int position);
+//    }
 
     // 삭제하기.
     public void remove(int position) {
         // 예외상황이 벌어졌을 때, 강제상황 실행.
         try{
             dutyTitleList.remove(position);
-            notifyItemRemoved(position);
+//            notifyItemRemoved(position);
+            notifyDataSetChanged();
         } catch (IndexOutOfBoundsException ex){
             ex.printStackTrace();
          }

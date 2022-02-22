@@ -22,9 +22,9 @@ public class Editor_Presenter {
     }
 
     // 제목 저장하기.
-    void saveTitle(String title_name, int title_name_id) {
+    void saveTitle(int title_name_id, String title_name) {
         GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name, title_name_id);
+        Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name_id, title_name);
 
         callPostTitle.enqueue(new Callback<DutyTitle>() {
             @Override
@@ -47,10 +47,10 @@ public class Editor_Presenter {
     }
 
     // 수정하기 (DB연동)
-    void updateTitle(int title_name_id, String title_name) {
+    void updateTitle(int title_id, int title_name_id, String title_name) {
 
         GetDataService postUpdate_Title = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<DutyTitle> callUpdate_Title = postUpdate_Title.updateTitle(title_name_id, title_name);
+        Call<DutyTitle> callUpdate_Title = postUpdate_Title.updateTitle(title_id,title_name_id, title_name);
 
         callUpdate_Title.enqueue(new Callback<DutyTitle>() {
             @Override
