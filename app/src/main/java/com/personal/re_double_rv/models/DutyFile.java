@@ -7,6 +7,8 @@ public class DutyFile {
 
     @SerializedName("step_id") private int step_id;
 
+    @SerializedName("file_id") private int file_id;
+
     @SerializedName("file_boolean") private int file_boolean;
 
     @SerializedName("file_path") private String file_path;
@@ -18,8 +20,9 @@ public class DutyFile {
     @Expose
     @SerializedName("message") private String message;
 
-    public DutyFile(int step_id, int file_boolean, String file_path) {
+    public DutyFile(int step_id, int file_id, int file_boolean, String file_path) {
         this.step_id = step_id;
+        this.file_id = file_id;
         this.file_boolean = file_boolean;
         this.file_path = file_path;
     }
@@ -30,6 +33,14 @@ public class DutyFile {
 
     public void setStep_id(int step_id) {
         this.step_id = step_id;
+    }
+
+    public int getFile_id() {
+        return file_id;
+    }
+
+    public void setFile_id(int file_id) {
+        this.file_id = file_id;
     }
 
     public int getFile_boolean() {

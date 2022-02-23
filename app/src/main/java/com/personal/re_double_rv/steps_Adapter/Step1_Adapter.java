@@ -181,7 +181,7 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
                             public void onClick(View v) {
                                 DutyFile dutyFile = dutyFileList.get(position); // DutyFile 가져옴.
 
-                                switch(dutyFile.getFile_boolean()){
+                                switch(dutyFile.getFile_id()){
                                   case  1:
                                     case 2:
                                         openPdf(dutyFile.getFile_path());
@@ -218,7 +218,7 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
                         holder.ib_tip.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                tip_contentAlertDialog(holder,position); // AlertDialog 띄우기.
+                                tip_contentAlertDialog(holder,position); // AlertDialog 띄우기.(Tip 내용).
                             }
                         });
                     }
@@ -255,11 +255,11 @@ public class Step1_Adapter extends RecyclerView.Adapter<Step1_Adapter.Step1ViewH
     // AlertDialog 열기. -> Tip 열기.
     public void tip_contentAlertDialog(@NonNull Step1ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         DutyTip dutyTip = dutyTipList.get(position);
-        holder.ib_tip.setTag(dutyTip.getTip_boolean());
-        holder.ib_tip.setTag(dutyTip.getStep_id());
+        holder.ib_tip.setTag(dutyTip.getTip_id());
 
+        // AlertDialog 열기.
         AlertDialog.Builder builder = new AlertDialog.Builder(step1Context);
-        builder.setTitle(dutyTip.getStep()).setMessage(dutyTip.getTip_content());
+        builder.setTitle(dutyTip.getStep()).setMessage(dutyTip.getTip_content()); // title = step이름. Message = tip_content
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

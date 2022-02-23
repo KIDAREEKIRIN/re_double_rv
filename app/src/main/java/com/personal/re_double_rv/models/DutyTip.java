@@ -7,13 +7,16 @@ public class DutyTip {
 
     @SerializedName("step") private String step;
 
+    @SerializedName("tip_id") private int tip_id;
+
     @SerializedName("tip_boolean") private int tip_boolean;
 
     @SerializedName("tip_content") private String tip_content;
 
-    public DutyTip(int step_id, String step, int tip_boolean, String tip_content) {
+    public DutyTip(int step_id, String step, int tip_id, int tip_boolean, String tip_content) {
         this.step_id = step_id;
         this.step = step;
+        this.tip_id = tip_id;
         this.tip_boolean = tip_boolean;
         this.tip_content = tip_content;
     }
@@ -32,6 +35,14 @@ public class DutyTip {
 
     public void setStep(String step) {
         this.step = step;
+    }
+
+    public int getTip_id() {
+        return tip_id;
+    }
+
+    public void setTip_id(int tip_id) {
+        this.tip_id = tip_id;
     }
 
     public int getTip_boolean() {
