@@ -92,11 +92,11 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         itemClickListener = ((view, position) -> {
 
             // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.
-            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
+//            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
             String title_name = dutyTitleList.get(position).getTitle_name();
             // Intent로 넘기기.
             Intent editTitle = new Intent(title_Adapter_Context, FullPopupActivity.class);
-            editTitle.putExtra("duty_Title_id",title_name_id);
+//            editTitle.putExtra("duty_Title_id",title_name_id);
             editTitle.putExtra("duty_Title",title_name); // 넘길 duty_title 에 "Key" + "Value"
             title_Adapter_Context.startActivity(editTitle);
 //            startActivityForResult(editTitle, INTENT_EDIT); // 수정 시 200;
@@ -167,9 +167,9 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         DutyTitle dutyTitle = dutyTitleList.get(position);
 
         holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
-        holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
+//        holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
 
-        holder.ib_edit_Title.setTag(dutyTitle.getTitle_name_id());
+//        holder.ib_edit_Title.setTag(dutyTitle.getTitle_name_id());
         holder.ib_edit_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +180,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
             }
         });
 
-        holder.ib_delete_Title.setTag(dutyTitle.getTitle_name_id()); // 삭제 태그 달기.
+//        holder.ib_delete_Title.setTag(dutyTitle.getTitle_name_id()); // 삭제 태그 달기.
         holder.ib_delete_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +191,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
                     public void onClick(DialogInterface dialog, int which) {
                         // Duty _ Title 삭제하기 기능
                         editor_presenter = new Editor_Presenter(view);
-                        editor_presenter.deleteTitle(dutyTitleList.get(position).getTitle_name_id());
+//                        editor_presenter.deleteTitle(dutyTitleList.get(position).getTitle_name_id());
                         remove(position);
 //                        notifyDataSetChanged();
                         dialog.dismiss();

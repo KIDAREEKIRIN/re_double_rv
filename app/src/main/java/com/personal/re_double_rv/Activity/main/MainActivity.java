@@ -65,8 +65,7 @@ public class MainActivity extends Activity implements Main_View{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 추가 가능한 Activity 화면전환.
-                // 팝업으로 띄우기.
+                // 추가 가능한 Activity 화면전환 -_-> 팝업으로 띄우기.
                 startActivityForResult(new Intent(MainActivity.this,
                         Popup_Activity.class),INTENT_ADD); // 추가시 100;
             }
@@ -74,8 +73,8 @@ public class MainActivity extends Activity implements Main_View{
 
         main_presenter = new Main_Presenter(this); // Main_Presenter 생성.
 //        title_adapter.notifyDataSetChanged();
-        main_presenter.getData(); // DB에서 데이터 가져오기.
-
+        main_presenter.getDutyTitle(); //DB에서 데이터 가져오기.
+//        main_presenter.getData(); // DB에서 데이터 가져오기.
 
     }
 
@@ -86,11 +85,14 @@ public class MainActivity extends Activity implements Main_View{
 
         // 데이터 추가시.
         if (requestCode == INTENT_ADD && resultCode == RESULT_OK) {
-            main_presenter.getData(); // reload data
+            main_presenter.getDutyTitle();
+//            main_presenter.getData(); // reload data
         } else if (requestCode == INTENT_EDIT && resultCode == RESULT_OK)
-            main_presenter.getData(); // reload data
+            main_presenter.getDutyTitle();
+//            main_presenter.getData(); // reload data
     }
 
+    // 성공했을 때, 메세지 띄우기.
     @Override
     public void onRequestSuccess(String message) {
         Toast.makeText(MainActivity.this,
@@ -98,6 +100,7 @@ public class MainActivity extends Activity implements Main_View{
                 Toast.LENGTH_SHORT).show();
     }
 
+    // 실패했을 때, 메세지 띄우기.
     @Override
     public void onRequestError(String message) {
         Toast.makeText(MainActivity.this,
@@ -106,18 +109,21 @@ public class MainActivity extends Activity implements Main_View{
     }
 
 
+    // 업무 Title 선택할 경우,
     @Override
     public void onGetResult(List<DutyTitle> dutyTitleList) {
         // 아이템 클릭 리스너(데이터 수정)
         itemClickListener = ((view, position) -> {
 
             // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.
-            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
-            String title_name = dutyTitleList.get(position).getTitle_name();
+//            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
+//            String title_name = dutyTitleList.get(position).getTitle_name();
+
+            // 아이템 클릭 시, title_order + title_name 값 넘기기.
             // Intent로 넘기기.
             Intent editTitle = new Intent(MainActivity.this, Popup_Activity.class);
-            editTitle.putExtra("title_name_id",title_name_id);
-            editTitle.putExtra("title_name",title_name); // 넘길 duty_title 에 "Key" + "Value"
+//            editTitle.putExtra("title_name_id",title_name_id);
+//            editTitle.putExtra("title_name",title_name); // 넘길 duty_title 에 "Key" + "Value"
             startActivityForResult(editTitle, INTENT_EDIT); // 수정 시 200;
 
         });
@@ -137,7 +143,8 @@ public class MainActivity extends Activity implements Main_View{
     @Override
     protected void onResume() {
         super.onResume();
-        main_presenter.getData();
+        main_presenter.getDutyTitle();
+//        main_presenter.getData(); 기존의 DB에서 업무 Title 불러오기.
     }
 
 }

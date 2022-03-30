@@ -1,6 +1,8 @@
 package com.personal.re_double_rv.Activity.main;
 
+import com.personal.re_double_rv.Retrofit.ApiRetroData;
 import com.personal.re_double_rv.Retrofit.GetDataService;
+import com.personal.re_double_rv.Retrofit.RetrofitClient;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyTitle;
 
@@ -44,6 +46,25 @@ public class Main_Presenter {
 //            }
 //        });
 //    }
+    // DB에 저장된 Duty_Title의 데이터 가져오기.
+    void getDutyTitle() {
+        ApiRetroData getDutyTitles = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
+        Call<List<DutyTitle>> callDutyTitles = getDutyTitles.readAllTitles();
+
+        callDutyTitles.enqueue(new Callback<List<DutyTitle>>() {
+            @Override
+            public void onResponse(Call<List<DutyTitle>> call, Response<List<DutyTitle>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    view.onGetResult(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutyTitle>> call, Throwable t) {
+                view.onRequestError(t.getLocalizedMessage());
+            }
+        });
+    }
 
     // DB에 저장된 데이터 가져오기.
     void getData() {

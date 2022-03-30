@@ -3,6 +3,7 @@ package com.personal.re_double_rv.Activity.editor;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +31,10 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
     int id; // 넘어온 Duty_Title_Id;
     String name; // 넘어온 Duty_Title;
 
+    // Insert Title_order + Title_name
+    int title_order; // title_order
+    String title_name; // title_name
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +45,14 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         et_idText = findViewById(R.id.et_idText);// 번호.
         editText_Title = findViewById(R.id.et_txtText); // 추가할 내용.
 
-        // Editor_Presenter 객체 생성.
+        // Editor_Presenter 객체 생성. MVP 모델의 Presenter 객
         editor_presenter = new Editor_Presenter(this); // Editor_Presenter 호출.
 
-        // Activity에서 넘긴 Intent 값 받기.
+        // Activity에서 넘긴 Intent 값 받기. (기존값)
+        // Popup 창에서 수정하기를 위해 불러옴.
         Intent intent = getIntent();
-        id = intent.getIntExtra("title_name_id",0);
-        name = intent.getStringExtra("title_name");
+//        id = intent.getIntExtra("title_name_id",0);
+//        name = intent.getStringExtra("title_name");
 
         setDataFormIntentExtra();
 
@@ -55,11 +61,12 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // editText_Title 을 빈칸으로 만들기.
                 editText_Title.setText(null);
             }
         });
 
-        // 팝업창 닫기.
+        // 팝업창 닫기. 팝업창 우측 상단의 x 표시.
         ib_cancel_PopupBtn = findViewById(R.id.ib_cancel_PopupBtn);
         ib_cancel_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,10 +75,8 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
             }
         });
 
-        // 팝업창 update 버튼 선언.
+        // 팝업창 이미지버튼 update 버튼 선언.
         ib_update_PopupBtn = findViewById(R.id.ib_update_PopupBtn);
-
-
         btn_Popup_Update = findViewById(R.id.btn_Popup_Update); // "수정" 버튼 선언.
 
         // 팝업창 edit 버튼 클릭시.
@@ -88,7 +93,9 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
                 btn_Popup_Update.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // int 값 올리기.
                         int title_name_id = Integer.parseInt(et_idText.getText().toString());
+                        // 수정한 title_name 올리기.
                         String title_name_edit = editText_Title.getText().toString();
                         editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
                         finish();
@@ -101,34 +108,43 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_update_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // title_name_id 값이랑, 수정한 내용을 Update(수정).
                 int title_name_id = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString();
                 editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
-                finish();
+                finish(); // 끝내기.
             }
         });
 
         // 확인 버튼 클릭시. -> 데이터 저장 + DB.
+        // Insert DutyTitle의 과정.
         btn_Popup_Ok = findViewById(R.id.btn_Popup_Ok);
         btn_Popup_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int title_name_id = Integer.parseInt(et_idText.getText().toString());
-                String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-                editor_presenter.saveTitle(title_name_edit,title_name_id); // duty_Title 저장.
+//                int title_name_id = Integer.parseInt(et_idText.getText().toString());
+//                String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
+//                editor_presenter.saveTitle(title_name_edit,title_name_id); // duty_Title 저장.
+                int title_order = Integer.parseInt(et_idText.getText().toString());
+                String title_name = editText_Title.getText().toString();
+                editor_presenter.insert_DutyTitle(title_order,title_name);
+                Log.d("업무 추가하기", "onClick: " + title_order +"\n"+  title_name);
                 finish();
             }
         });
 
     }
 
+    // Intent 값을 처리하는 Method.
     private void setDataFormIntentExtra() {
 
         if ( id != 0 ) {
             // 추가할 내용의 EditText 에 Intent로 받아온 title_name 값을 넣는다.
             editText_Title.setText(name);
+            // 읽기 모드.
             readMode();
         } else {
+            // 수정 모드.
             editMode();
         }
 
@@ -136,11 +152,13 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
 
     // 수정 모드.
     private void editMode() {
+        // true => 터치 모드에서 모든 키입력을 받음.
         editText_Title.setFocusableInTouchMode(true);
     }
 
-    // 읽기 모드.
+    // 읽기 모드 -> 뷰의 포커스를 받지 않음.
     private void readMode() {
+        // false => 터치 모드에서 모든 키입력을 받지 않음.
         editText_Title.setFocusableInTouchMode(false); // 터치 모드에서도 모든 키입력을 받음(터치 + 키보드).
         editText_Title.setFocusable(false); // 뷰의 포커스를 가질 수 있는지?
     }

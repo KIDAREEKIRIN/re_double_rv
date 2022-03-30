@@ -14,6 +14,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
+// Retrofit에서 정의하는 Service.
+// interface로 선언하기에 구현할 필요는 없고, 어떤 형태와 방식으로 통신을 할 지를
+// Annotation과 parameter
 public interface GetDataService {
 
     // 수련활동 업무 title 가져오기.
@@ -74,7 +77,7 @@ public interface GetDataService {
     );
 
     // 단계 삭제 Post 관련.
-    @FormUrlEncoded
+    @FormUrlEncoded // Field 형식을 사용할 때에는 Form이 encode 되어야 한다.
     @POST("sooryun_delete_step.php")
     Call<DutyStep> deleteSteps(
             @Field("step_id") int step_id
