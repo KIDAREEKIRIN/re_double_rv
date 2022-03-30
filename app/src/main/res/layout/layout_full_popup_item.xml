@@ -27,22 +27,23 @@
                     android:layout_margin="2dp"
                     android:layout_weight="8"
                     android:text="Sub item title"
+                    android:layout_gravity="center"
                     android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/ib_delete_Step"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:src="@drawable/ic_delete" />
 
-                <!--                <ImageButton-->
-                <!--                    android:id="@+id/iv_tips"-->
-                <!--                    android:layout_width="20dp"-->
-                <!--                    android:layout_height="20dp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:background="@color/white"-->
-                <!--                    android:src="@drawable/ic_more" />-->
+                <ImageButton
+                    android:id="@+id/ib_tip"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_tip" />
 
             </LinearLayout>
         </RelativeLayout>

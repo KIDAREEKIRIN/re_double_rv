@@ -1,9 +1,11 @@
 package com.personal.re_double_rv.Retrofit;
 
+import com.personal.re_double_rv.models.DutyFile;
 import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
+import com.personal.re_double_rv.models.DutyTip;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import java.util.List;
@@ -42,8 +44,8 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("save_title.php")
     Call<DutyTitle> saveTitle(
-            @Field("title_name") String title_name,
-            @Field("title_name_id") int title_name_id
+            @Field("title_name_id") int title_name_id,
+            @Field("title_name") String title_name
     );
 
     // 단계 추가 Post 관련.
@@ -58,6 +60,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("update_title.php")
     Call<DutyTitle> updateTitle(
+            @Field("title_id") int title_id,
             @Field("title_name_id") int title_name_id,
             @Field("title_name") String title_name
     );
@@ -82,4 +85,20 @@ public interface GetDataService {
     Call<DutyStep> deleteSteps(
             @Field("step_id") int step_id
     );
+
+    // 단계 체크박스 Post 관련.
+    @FormUrlEncoded
+    @POST("sooryun_update_check.php")
+    Call<DutyStep> updateCheck(
+            @Field("step_id") int step_id,
+            @Field("check_boolean") int check_boolean
+    );
+
+    // 파일 GET 관련.
+    @GET("sooryun_file.php")
+    Call<List<DutyFile>> getFiles();
+
+    // Tip Get 관련.
+    @GET("sooryun_tip.php")
+    Call<List<DutyTip>> getTips();
 }

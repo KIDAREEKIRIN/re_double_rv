@@ -48,7 +48,7 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
     public class FullPopup_Step1_ViewHolder extends RecyclerView.ViewHolder{
 
         CardView cv_dutyStep;
-        ImageButton ib_delete_Step;
+        ImageButton ib_delete_Step, ib_tip;
         TextView tv_Popup_sub_step;
 
         public FullPopup_Step1_ViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
@@ -56,6 +56,7 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
 
             cv_dutyStep = itemView.findViewById(R.id.cv_dutyStep);
             ib_delete_Step = itemView.findViewById(R.id.ib_delete_Step);
+            ib_tip = itemView.findViewById(R.id.ib_tip);
             tv_Popup_sub_step = itemView.findViewById(R.id.tv_Popup_sub_step);
 
         }
@@ -76,8 +77,6 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
     public void onBindViewHolder(@NonNull FullPopup_Step1_ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         DutyStep1 step1 = dutyStep1List.get(position);
-//        dutyStep1List = new ArrayList<>();
-//        dutyStep1List.addAll()
 
         holder.cv_dutyStep.setTag(step1.getStep_id());
         holder.cv_dutyStep.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +117,16 @@ public class FullPopup1_Adapter extends RecyclerView.Adapter<FullPopup1_Adapter.
                     }
                 });
                 builder.show();
+            }
+        });
+
+        // Tip 클릭시, 수정하기.
+        holder.ib_tip.setTag(dutyStep1List.get(position).getTip_boolean());
+        holder.ib_tip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                Toast.makeText(mContext, "클릭" + dutyStep1List.get(position).getStep1(), Toast.LENGTH_SHORT).show();
             }
         });
 

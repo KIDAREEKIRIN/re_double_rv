@@ -4,6 +4,9 @@ import com.personal.re_double_rv.Retrofit.ApiRetroData;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClient;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
+import com.personal.re_double_rv.models.DutyFile;
+import com.personal.re_double_rv.models.DutyStep;
+import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import java.util.List;
@@ -81,6 +84,46 @@ public class Main_Presenter {
 
             @Override
             public void onFailure(Call<List<DutyTitle>> call, Throwable t) {
+                view.onRequestError(t.getLocalizedMessage());
+            }
+        });
+    }
+
+    // 체크박스 업데이트.
+    public void updateCheck(int step_id, int check_boolean) {
+        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<DutyStep> callPostCheck = getDataService.updateCheck(step_id,check_boolean);
+
+        callPostCheck.enqueue(new Callback<DutyStep>() {
+            @Override
+            public void onResponse(Call<DutyStep> call, Response<DutyStep> response) {
+                if(response.isSuccessful() && response.body() != null) {
+//                    view.onRequestSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DutyStep> call, Throwable t) {
+                view.onRequestError(t.getLocalizedMessage());
+            }
+        });
+    }
+
+    // 파일 가져오기.
+    public void getFiles() {
+        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<DutyFile>> callFiles = getDataService.getFiles();
+
+        callFiles.enqueue(new Callback<List<DutyFile>>() {
+            @Override
+            public void onResponse(Call<List<DutyFile>> call, Response<List<DutyFile>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    view.onRequestSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutyFile>> call, Throwable t) {
                 view.onRequestError(t.getLocalizedMessage());
             }
         });

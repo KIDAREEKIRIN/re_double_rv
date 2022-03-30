@@ -46,8 +46,10 @@ public class Popup_Sub extends Activity implements Popup_View {
 
         et_txtText = findViewById(R.id.et_txtText);
 
+        // Popup_sub_presenter 선언.
         popup_sub_presenter = new Popup_Sub_Presenter(this);
 
+        // MainActivity로부터 넘겨받은 Intent 값.
         Intent intent = getIntent();
         title_id_value = intent.getIntExtra("title_id_value",0);
         step_id = intent.getIntExtra("step_id",0);
@@ -72,6 +74,7 @@ public class Popup_Sub extends Activity implements Popup_View {
             }
         });
 
+        // 수정버튼 이미지버튼 클릭시.
         ib_edit_PopupBtn = findViewById(R.id.ib_edit_PopupBtn);
         ib_edit_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +92,7 @@ public class Popup_Sub extends Activity implements Popup_View {
                 String step = et_txtText.getText().toString(); // EditText의 값을 저장한다.
 //                popup_sub_presenter = new Popup_Sub_Presenter(view);
                 popup_sub_presenter.saveStep(step, title_id_value);
-
                 finish();
-
                 Log.d("클릭", "onClick: 추가 버튼 클릭 시, step과 title_id_value 값." + step+ title_id_value);
 
             }

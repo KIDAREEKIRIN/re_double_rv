@@ -13,6 +13,15 @@ public class DutyStep {
 
     @SerializedName("title_id") private int title_id;
 
+    //Checkbox
+    @SerializedName("check_boolean") private int check_boolean;
+
+    //file
+    @SerializedName("file_boolean") private int file_boolean;
+
+    //tip
+    @SerializedName("tip_boolean") private int tip_boolean;
+
     // CRUD 추가 내용.
     @Expose
     @SerializedName("success") private Boolean success;
@@ -23,10 +32,13 @@ public class DutyStep {
 //    private List<DutyStep> dutyStepList;
 
 
-    public DutyStep(int step_id, String step, int title_id) {
+    public DutyStep(int step_id, String step, int title_id, int check_boolean, int file_boolean, int tip_boolean) {
         this.step_id = step_id;
         this.step = step;
         this.title_id = title_id;
+        this.check_boolean = check_boolean;
+        this.file_boolean = file_boolean;
+        this.tip_boolean = tip_boolean;
     }
 
     public int getStep_id() {
@@ -51,6 +63,30 @@ public class DutyStep {
 
     public void setTitle_id(int title_id) {
         this.title_id = title_id;
+    }
+
+    public int getCheck_boolean() {
+        return check_boolean;
+    }
+
+    public void setCheck_boolean(int check_boolean) {
+        this.check_boolean = check_boolean;
+    }
+
+    public int getFile_boolean() {
+        return file_boolean;
+    }
+
+    public void setFile_boolean(int file_boolean) {
+        this.file_boolean = file_boolean;
+    }
+
+    public int getTip_boolean() {
+        return tip_boolean;
+    }
+
+    public void setTip_boolean(int tip_boolean) {
+        this.tip_boolean = tip_boolean;
     }
 
     public Boolean getSuccess() {

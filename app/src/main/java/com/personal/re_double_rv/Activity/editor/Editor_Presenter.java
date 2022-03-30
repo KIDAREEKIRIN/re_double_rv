@@ -5,9 +5,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.personal.re_double_rv.Activity.main.MainActivity;
-import com.personal.re_double_rv.Retrofit.ApiRetroData;
 import com.personal.re_double_rv.Retrofit.GetDataService;
-import com.personal.re_double_rv.Retrofit.RetrofitClient;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyTitle;
 
@@ -23,37 +21,7 @@ public class Editor_Presenter {
         this.view = view;
     }
 
-    // 업무 title insert.
-    // 파라미터(매개변수)에 title_order + title_name 값을 받아서 넣음.
-    void insert_DutyTitle(int title_order, String title_name) {
-        ApiRetroData insertTitle = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
-        Call<DutyTitle> call_insertTitle = insertTitle.insertTitle(title_order, title_name);
-
-        call_insertTitle.enqueue(new Callback<DutyTitle>() {
-            @Override
-            public void onResponse(Call<DutyTitle> call, Response<DutyTitle> response) {
-                // 응답 성공 + 받아온 값이 null 이 아니면?
-                if(response.isSuccessful() && response.body() != null) {
-                    // success 값을 받음. php 파일에 작성된 true, false 등등.
-                    Boolean success = response.body().getSuccess();
-                    if(success) { // 성공하면
-                        // 성공 메세지를 받음.
-                        view.onRequestSuccess(response.body().getMessage());
-                    } else { // 성공하지 않으면 (실패하면)
-                        // 에러 메세지를 받음.
-                        view.onRequestError(response.body().getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DutyTitle> call, Throwable t) {
-
-            }
-        });
-    }
-
-    // 제목 저장하기.(기존)
+    // 제목 저장하기.
     void saveTitle(String title_name, int title_name_id) {
         GetDataService postTitle = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<DutyTitle> callPostTitle = postTitle.saveTitle(title_name, title_name_id);
@@ -62,7 +30,6 @@ public class Editor_Presenter {
             @Override
             public void onResponse(Call<DutyTitle> call, Response<DutyTitle> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Boolean(논리 연산자)를 활용해서
                     Boolean success = response.body().getSuccess();
                     if (success) { // 성공시.
                         view.onRequestSuccess(response.body().getMessage());
