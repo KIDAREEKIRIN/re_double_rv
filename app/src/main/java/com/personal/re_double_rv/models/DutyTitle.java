@@ -48,6 +48,7 @@ public class DutyTitle {
         this.title_id = title_id;
     }
 
+    // 기존 title_name_id => title_order 로 교체.
 //    public int getTitle_name_id() {
 //        return title_name_id;
 //    }

@@ -29,8 +29,8 @@ public class Popup_Sub extends Activity implements Popup_View {
     Button btn_Popup_Ok,btn_Popup_Update ; // 확인 버튼.
 
     String step;
-    int step_id;
-    int title_id_value;
+    int step_id; // step_id 값.
+    int title_id_value; // title_order 값.
 
     Popup_Sub_Presenter popup_sub_presenter;
     Popup_View view;

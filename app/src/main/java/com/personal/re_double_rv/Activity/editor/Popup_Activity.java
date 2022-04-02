@@ -26,9 +26,13 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
     Editor_Presenter editor_presenter; // Editor_Presenter 받아오기.
 
 //    String edit_dutyTitle;
-
-    int id; // 넘어온 Duty_Title_Id;
+    int id; // 넘어온 Duty_Title_id
+    int order; // 넘어온 Duty_Title_order.;
     String name; // 넘어온 Duty_Title;
+
+    // 변경하려는 값.
+//    int title_order; // 넘어온 Duty_Title_order;
+//    String title_name;  // 넘어온 Duty_Title_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +41,23 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popup);
 
-        et_idText = findViewById(R.id.et_idText);// 번호.
-        editText_Title = findViewById(R.id.et_txtText); // 추가할 내용.
+        et_idText = findViewById(R.id.et_idText);// 번호. 업무 title_order.
+        editText_Title = findViewById(R.id.et_txtText); // 추가할 내용. // 업무 title_name.
 
         // Editor_Presenter 객체 생성.
         editor_presenter = new Editor_Presenter(this); // Editor_Presenter 호출.
 
         // Activity에서 넘긴 Intent 값 받기.
         Intent intent = getIntent();
-        id = intent.getIntExtra("title_name_id",0);
+//        id = intent.getIntExtra("title_name_id",0);
+//        name = intent.getStringExtra("title_name");
+        id = intent.getIntExtra("title_id",0);
+        order = intent.getIntExtra("title_order",0);
         name = intent.getStringExtra("title_name");
+        // 무언가 팝업창에 표시를 해야하는데...?
+        et_idText.setText(String.valueOf(order));
+        editText_Title.setText(name);
+
 
         setDataFormIntentExtra();
 
@@ -55,7 +66,8 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText_Title.setText(null);
+                et_idText.setText(null); // 업무 title_order 초기화.
+                editText_Title.setText(null); // 업무 title_name 초기화.
             }
         });
 
@@ -71,7 +83,6 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         // 팝업창 update 버튼 선언.
         ib_update_PopupBtn = findViewById(R.id.ib_update_PopupBtn);
 
-
         btn_Popup_Update = findViewById(R.id.btn_Popup_Update); // "수정" 버튼 선언.
 
         // 팝업창 edit 버튼 클릭시.
@@ -85,12 +96,20 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
                 ib_update_PopupBtn.setVisibility(View.VISIBLE); // update 팝업창 버튼 이 보이고
                 ib_edit_PopupBtn.setVisibility(View.GONE); // edit 버튼이 사라짐(gone).
 
+                // 팝업창에서 수정하기 버튼 클릭시,
                 btn_Popup_Update.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int title_name_id = Integer.parseInt(et_idText.getText().toString());
+                        // int title_name_id = Integer.parseInt(et_idText.getText().toString());
+                        // String title_name_edit = editText_Title.getText().toString();
+                        //editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+
+
+                        // id (title_id)의 값을 집어 넣어서, php 파일에서의 post 방식의 파라미터를 모두 충족시킨다.
+                        int id = intent.getIntExtra("title_id",0);
+                        int title_order = Integer.parseInt(et_idText.getText().toString()); // title_order 값.
                         String title_name_edit = editText_Title.getText().toString();
-                        editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                        editor_presenter.updateTitle(id,title_order, title_name_edit);
                         finish();
                     }
                 });
@@ -101,9 +120,15 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         ib_update_PopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int title_name_id = Integer.parseInt(et_idText.getText().toString());
+//                int title_name_id = Integer.parseInt(et_idText.getText().toString());
+//                String title_name_edit = editText_Title.getText().toString();
+
+                // id (title_id)의 값을 집어 넣어서, php 파일에서의 post 방식의 파라미터를 모두 충족시킨다.
+                int id = intent.getIntExtra("title_id",0);
+                int title_order = Integer.parseInt(et_idText.getText().toString());
                 String title_name_edit = editText_Title.getText().toString();
-                editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
+                editor_presenter.updateTitle(id,title_order,title_name_edit);
+//                editor_presenter.updateTitle(title_name_id,title_name_edit); // 받아온 값으로 UPDATE를 해줘야 수정이 됨.
                 finish();
             }
         });
@@ -113,9 +138,10 @@ public class Popup_Activity extends Activity implements Editor_View, Main_View {
         btn_Popup_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int title_name_id = Integer.parseInt(et_idText.getText().toString());
-                String title_name_edit = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
-                editor_presenter.saveTitle(title_name_edit,title_name_id); // duty_Title 저장.
+                // title_order 의 값을 집어 넣는다.
+                int title_order = Integer.parseInt(et_idText.getText().toString());
+                String title_name = editText_Title.getText().toString(); // EditText 의 값을 저장한다.
+                editor_presenter.insertTitle(title_order,title_name); // duty_Title 저장.
                 finish();
             }
         });

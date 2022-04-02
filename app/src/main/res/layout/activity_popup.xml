@@ -62,14 +62,14 @@
             android:id="@+id/et_idText"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginBottom="3dp"
-            android:textSize="15sp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="0"
             android:minHeight="48dp"
             android:textColor="#000"
             android:textColorHint="#4F4444"
-            android:gravity="center"
-            android:hint="0"/>
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_txtText"

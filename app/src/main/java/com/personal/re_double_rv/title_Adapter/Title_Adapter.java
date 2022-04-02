@@ -73,6 +73,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         this.itemClickListener = itemClickListener;
     }
 
+
     // Main_View implements
     @Override
     public void onRequestSuccess(String message) {
@@ -93,11 +94,13 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
             // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.
 //            int title_name_id = dutyTitleList.get(position).getTitle_name_id();
-            String title_name = dutyTitleList.get(position).getTitle_name();
+            int title_order = dutyTitleList.get(position).getTitle_order(); // title_order (업무 순서).
+            String title_name = dutyTitleList.get(position).getTitle_name(); // title_name (업무 이름).
             // Intent로 넘기기.
             Intent editTitle = new Intent(title_Adapter_Context, FullPopupActivity.class);
+            editTitle.putExtra("title_order",title_order); // title_name_id -> title_order로 바꾸기.
 //            editTitle.putExtra("duty_Title_id",title_name_id);
-            editTitle.putExtra("duty_Title",title_name); // 넘길 duty_title 에 "Key" + "Value"
+            editTitle.putExtra("title_name",title_name); // 넘길 duty_title 에 "Key" + "Value"
             title_Adapter_Context.startActivity(editTitle);
 //            startActivityForResult(editTitle, INTENT_EDIT); // 수정 시 200;
 
@@ -120,7 +123,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     // Title ViewHolder;
     public class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tv_duty_title_id, tv_duty_title; // 업무 순서번호. 업무 제목.
+        TextView tv_duty_title_order, tv_duty_title; // 업무 순서번호. 업무 제목.
         ImageButton ib_edit_Title, ib_delete_Title, ib_downBtn, ib_upBtn; // 수정, 삭제(사용). 펼치기 / 접기.
         RecyclerView rv_step_item; // RecyclerView.
         CardView cv_dutyTitle; // 전체 카드뷰.
@@ -132,12 +135,10 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         public TitleViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
             super(itemView);
 
-            tv_duty_title_id = itemView.findViewById(R.id.tv_duty_title_id); // duty_Title_id
+            tv_duty_title_order = itemView.findViewById(R.id.tv_duty_title_order); // duty_Title_order
             tv_duty_title = itemView.findViewById(R.id.tv_duty_title); // duty_Title
             ib_edit_Title = itemView.findViewById(R.id.ib_edit_Title); // 수정하기.
-
             ib_delete_Title = itemView.findViewById(R.id.ib_delete_Title); // 지우기.
-
             cv_dutyTitle = itemView.findViewById(R.id.cv_dutyTitle); // 카드뷰
             rv_step_item = itemView.findViewById(R.id.rv_step_item); // 하위 리사이클러뷰.
 
@@ -167,20 +168,28 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         DutyTitle dutyTitle = dutyTitleList.get(position);
 
         holder.tv_duty_title.setText(dutyTitle.getTitle_name()); // title을 가져와서 붙임.
+        // Title_name_id 를 title_order 로 바꾸기.
+        holder.tv_duty_title_order.setText(String.valueOf(dutyTitle.getTitle_order())); // Title_order 값 붙이기.
 //        holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
 
-//        holder.ib_edit_Title.setTag(dutyTitle.getTitle_name_id());
+        holder.ib_edit_Title.setTag(dutyTitle.getTitle_order()); //
         holder.ib_edit_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent goFull = new Intent(title_Adapter_Context, FullPopupActivity.class);
-                goFull.putExtra("duty_Title_id",dutyTitleList.get(position).getTitle_id());
-                goFull.putExtra("duty_Title",dutyTitleList.get(position).getTitle_name());
+//                goFull.putExtra("duty_Title_id",dutyTitleList.get(position).getTitle_id());
+//                goFull.putExtra("duty_Title",dutyTitleList.get(position).getTitle_name());
+
+                // 큰 FullPopupActivity로 이동시킬 때, 해당 title_order, title_name 을 보낸다.
+                goFull.putExtra("title_order",dutyTitleList.get(position).getTitle_order());
+                goFull.putExtra("title_name",dutyTitleList.get(position).getTitle_name());
                 title_Adapter_Context.startActivity(goFull);
             }
         });
 
 //        holder.ib_delete_Title.setTag(dutyTitle.getTitle_name_id()); // 삭제 태그 달기.
+        // holder에 삭제 태그 달기.
+        holder.ib_delete_Title.setTag(dutyTitle.getTitle_order());
         holder.ib_delete_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +200,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
                     public void onClick(DialogInterface dialog, int which) {
                         // Duty _ Title 삭제하기 기능
                         editor_presenter = new Editor_Presenter(view);
-//                        editor_presenter.deleteTitle(dutyTitleList.get(position).getTitle_name_id());
+                        editor_presenter.deleteTitle(dutyTitleList.get(position).getTitle_order());
                         remove(position);
 //                        notifyDataSetChanged();
                         dialog.dismiss();
@@ -315,7 +324,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 //        void onItemClick(View view, int position);
 //    }
 
-    // 삭제하기.
+    // 삭제하기. (DB 연동이 아닌, 해당 RecyclerView에서의 항목 삭제.)
     public void remove(int position) {
         // 예외상황이 벌어졌을 때, 강제상황 실행.
         try{

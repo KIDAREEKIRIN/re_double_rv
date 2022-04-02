@@ -26,7 +26,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_duty_title_id"
+                    android:id="@+id/tv_duty_title_order"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="12sp"
@@ -37,7 +37,7 @@
                     android:id="@+id/tv_duty_title"
                     android:layout_width="266dp"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/tv_duty_title_id"
+                    android:layout_toRightOf="@+id/tv_duty_title_order"
                     android:layout_weight="1"
                     android:inputType="textMultiLine"
                     android:padding="12sp"

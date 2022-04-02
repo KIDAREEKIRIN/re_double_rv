@@ -19,18 +19,33 @@ public interface ApiRetroData {
 
     // dutyTitle POJO 데이터 클래스.
 
-    // 업무 title 추가하기.
-    @FormUrlEncoded
+    // 업무 title 추가(insert)하기.
+    @FormUrlEncoded // url의 형식으로 encoded(암호화된).
     @POST("dutyTitle_insert.php")
     Call<DutyTitle> insertTitle(
-            // title_order 업무순서.
+            // title_order -> 업무순서.
             @Field("title_order") int title_order,
-            // title_name 업무 title 이름
+            // title_name -> 업무 title 이름
             @Field("title_name") String title_name
     );
 
-    // 업무 읽기(read).
+    // 업무 title 읽기(read).
     @GET("dutyTitle_read.php") // List 형태로 불러오기.
     Call<List<DutyTitle>> readAllTitles();
-    
+
+    // 업무 title 수정(update)하기.
+    @FormUrlEncoded
+    @POST("dutyTitle_update.php") // update php 주소.
+    Call<DutyTitle> updateTitle(
+            @Field("title_id") int title_id, // 업무 title Index.
+            @Field("title_order") int title_order, // 업무 title 순서.
+            @Field("title_name") String title_name // 업무 title 이름.
+    );
+
+    // 업무 title 삭제(delete)하기.
+    @FormUrlEncoded
+    @POST("dutyTitle_delete.php") // delete php 주소.
+    Call<DutyTitle> deleteTitle(
+            @Field("title_order") int title_order // 업무 title 순서.
+    );
 }

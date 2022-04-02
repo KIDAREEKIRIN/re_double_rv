@@ -46,7 +46,8 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
     private static final int INTENT_EDIT = 200;
     private static final int INTENT_ADD = 100;
     CardView cv_dutyTitle;
-    TextView tv_duty_title_id, tv_duty_title;
+//    TextView tv_duty_title_id, tv_duty_title; 기존 것.
+    TextView tv_duty_titleName, tv_duty_titleOrder;
     ImageButton ib_delete_Title, ib_edit_Title, ib_edit_Step;
     Button btn_OK;
 
@@ -70,16 +71,15 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
     Popup_Sub_Presenter popup_sub_presenter;
     Popup_View view;
 
-    // 받아온 제목.
+    // 받아온 title_name.
     String duty_Title;
+    String duty_titleName;
+    // 받아온 title_order
     int duty_Title_id;
-
-    // 받은 단계;
-    String step1;
-
+    int duty_titleOrder;
     // 추가 Fab 버튼.
     FloatingActionButton fab;
-
+    // 아이템 클릭 리스너.
     ItemClickListener itemClickListener;
 
     private static final String TAG = "fAB 클릭 시,";
@@ -91,19 +91,24 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
         fullPopup_presenter = new FullPopup_Presenter( this); //FullPopup_Presenter 생성.
 
-        tv_duty_title = findViewById(R.id.tv_duty_title); // title
-        tv_duty_title_id = findViewById(R.id.tv_duty_title_id); // title_id
-
-        // Intent 값 받아오기.
+        // titleOrder + titleName (업무 순서 + 업무 이름) findViewById. -> Id 값을 이용해 특정값을 받아오는 Method.
+        tv_duty_titleOrder = findViewById(R.id.tv_duty_titleOrder); // 업무 titleOrder 순서.
+        tv_duty_titleName = findViewById(R.id.tv_duty_titleName); // 업무 titleName 이름.
+//        tv_duty_title = findViewById(R.id.tv_duty_title); // title
+//        tv_duty_title_id = findViewById(R.id.tv_duty_title_id); // title_id
+        // Intent 값 받아오기. MainActivity 의 Title_Adapter 에서 받아온 Intent 값.
         Intent intent = getIntent();
-
 //         Id 값을 받아서 String으로 표시하기.
-        duty_Title_id = intent.getIntExtra("duty_Title_id",0);
-        tv_duty_title_id.setText(String.valueOf(duty_Title_id));
+        duty_titleOrder = intent.getIntExtra("title_order",0); // 업무 title 순서.
+        tv_duty_titleOrder.setText(String.valueOf(duty_titleOrder)); // tv_duty_titleOrder에 titleOrder의 값을 String값으로 붙이기.
+//        duty_Title_id = intent.getIntExtra("duty_Title_id",0);
+//        tv_duty_title_id.setText(String.valueOf(duty_Title_id));
 
         // Title을 받아서 표현하기.
-        duty_Title = intent.getStringExtra("duty_Title");
-        tv_duty_title.setText(duty_Title);
+        duty_titleName = intent.getStringExtra("title_name"); // 업무 titleName.
+        tv_duty_titleName.setText(duty_titleName); // tv_duty_titleName 에 duty_titleName의 값을 붙이기.
+//        duty_Title = intent.getStringExtra("duty_Title");
+//        tv_duty_title.setText(duty_Title);
 
         // 리사이클러뷰.
         rv_step_item = findViewById(R.id.rv_step_item);
