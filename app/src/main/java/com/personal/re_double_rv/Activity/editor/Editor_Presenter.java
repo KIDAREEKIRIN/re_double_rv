@@ -1,14 +1,7 @@
 package com.personal.re_double_rv.Activity.editor;
 
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.personal.re_double_rv.Activity.main.MainActivity;
-import com.personal.re_double_rv.Retrofit.ApiRetroData;
-import com.personal.re_double_rv.Retrofit.GetDataService;
-import com.personal.re_double_rv.Retrofit.RetrofitClient;
-import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
+import com.personal.re_double_rv.Retrofit.DutyTitle.ApiRetroDataTitle;
+import com.personal.re_double_rv.Retrofit.DutyTitle.RetrofitClientTitle;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import retrofit2.Call;
@@ -25,7 +18,7 @@ public class Editor_Presenter {
 
     // 업무 title 저장하기.
     void insertTitle(int title_order, String title_name) {
-        ApiRetroData postTitle = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
+        ApiRetroDataTitle postTitle = RetrofitClientTitle.getRetrofitClient().create(ApiRetroDataTitle.class);
         Call<DutyTitle> callInsertTitle = postTitle.insertTitle(title_order, title_name);
 
         callInsertTitle.enqueue(new Callback<DutyTitle>() {
@@ -75,7 +68,7 @@ public class Editor_Presenter {
     // 수정하기(최신버전) title_order 버전.
     // 수정하기에서는 입력해서 바뀌는 값만, 파라미터로 지정한다. // title_id는 숨겨진 인덱스 느낌.
     void updateTitle(int title_id, int title_order, String title_name) {
-        ApiRetroData postUpdateTitle = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
+        ApiRetroDataTitle postUpdateTitle = RetrofitClientTitle.getRetrofitClient().create(ApiRetroDataTitle.class);
         Call<DutyTitle> callUpdateTitle = postUpdateTitle.updateTitle(title_id, title_order,title_name);
 
         callUpdateTitle.enqueue(new Callback<DutyTitle>() {
@@ -126,7 +119,7 @@ public class Editor_Presenter {
     // 업무 Title 삭제(delete)하기.
     // 왜 public 인가????
    public void deleteTitle(int title_order) {
-        ApiRetroData postDeleteTitle = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
+        ApiRetroDataTitle postDeleteTitle = RetrofitClientTitle.getRetrofitClient().create(ApiRetroDataTitle.class);
         Call<DutyTitle> callDeleteTitle = postDeleteTitle.deleteTitle(title_order);
 
         callDeleteTitle.enqueue(new Callback<DutyTitle>() {

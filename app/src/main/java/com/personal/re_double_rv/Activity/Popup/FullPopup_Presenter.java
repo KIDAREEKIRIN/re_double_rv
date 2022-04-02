@@ -3,10 +3,13 @@ package com.personal.re_double_rv.Activity.Popup;
 import android.view.View;
 
 import com.personal.re_double_rv.Popup_Adapter.FullPopup1_Adapter;
+import com.personal.re_double_rv.Retrofit.DutyStep.ApiRetroDataStep;
+import com.personal.re_double_rv.Retrofit.DutyStep.RetrofitClientStep;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
+import com.personal.re_double_rv.models.DutySteps;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import java.util.ArrayList;
@@ -44,24 +47,47 @@ public class FullPopup_Presenter {
         });
     }
 
+    // 업무 steps 불러오기(read).
     void getSteps() {
-        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep>> callSteps = getDataService.getAllSteps();
+        ApiRetroDataStep getDataSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
+        Call<List<DutySteps>> callReadSteps = getDataSteps.readAllSteps(); // steps 전부 불러오기.
 
-        callSteps.enqueue(new Callback<List<DutyStep>>() {
+        callReadSteps.enqueue(new Callback<List<DutySteps>>() {
             @Override
-            public void onResponse(Call<List<DutyStep>> call, Response<List<DutyStep>> response) {
+            public void onResponse(Call<List<DutySteps>> call, Response<List<DutySteps>> response) {
                 if(response.isSuccessful() && response.body() != null) {
+                    // 얘는 response.body().getMessage
                     view.onRequestSuccess(response.message());
+                } else { // 새로운 내용 추가.
+                    view.onRequestError(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DutyStep>> call, Throwable t) {
-                    view.onRequestError(t.getLocalizedMessage());
+            public void onFailure(Call<List<DutySteps>> call, Throwable t) {
+                view.onRequestError(t.getLocalizedMessage());
             }
         });
     }
+
+//    void getSteps() {
+//        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep>> callSteps = getDataService.getAllSteps();
+//
+//        callSteps.enqueue(new Callback<List<DutyStep>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep>> call, Response<List<DutyStep>> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    view.onRequestSuccess(response.message());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep>> call, Throwable t) {
+//                    view.onRequestError(t.getLocalizedMessage());
+//            }
+//        });
+//    }
 
     void getStep1List() {
         //Step1.

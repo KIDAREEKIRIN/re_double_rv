@@ -1,9 +1,9 @@
-package com.personal.re_double_rv.Retrofit;
+package com.personal.re_double_rv.Retrofit.DutyTitle;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient {
+public class RetrofitClientTitle {
 
     private static Retrofit retrofit;
 

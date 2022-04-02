@@ -37,6 +37,7 @@ import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
+import com.personal.re_double_rv.models.DutySteps;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Step1_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step2_Adapter;
@@ -55,6 +56,10 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
     List<DutyStep1> dutyStep1List; // step1 리스트에 들어갈 리스트.
     List<DutyStep2> dutyStep2List; // step2 리스트에 들어갈 리스트.
     List<DutyStep3> dutyStep3List; // step3 리스트에 들어갈 리스트.
+
+    // 새롭게 추가하는 내용. 04.02.
+    List<DutySteps> dutyStepsList; // steps 리스트에 들어갈 리스트.
+
     private Context title_Adapter_Context; // Context 선언.
     LinearLayoutManager linearLayoutManager; // LinearLayoutManager 선언.
 
@@ -172,7 +177,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
         holder.tv_duty_title_order.setText(String.valueOf(dutyTitle.getTitle_order())); // Title_order 값 붙이기.
 //        holder.tv_duty_title_id.setText(String.valueOf(dutyTitle.getTitle_name_id())); // 원래는 int인데 String 으로 붙임.
 
-        holder.ib_edit_Title.setTag(dutyTitle.getTitle_order()); //
+        holder.ib_edit_Title.setTag(dutyTitle.getTitle_order()); // 업무 title 수정하기 이미지 버튼 클릭시.
         holder.ib_edit_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -85,7 +85,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btn_Popup_Ok"
+            android:id="@+id/btn_Popup_insert"
             android:text="추가"
             android:textSize="24sp"
             android:textStyle="bold"

@@ -30,6 +30,7 @@ import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
+import com.personal.re_double_rv.models.DutySteps;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Steps_Adapter;
 import com.personal.re_double_rv.title_Adapter.ItemClickListener;
@@ -66,16 +67,17 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
     List<DutyStep1> dutyStep1List;
     List<DutyStep2> dutyStep2List;
     List<DutyStep3> dutyStep3List;
+    List<DutySteps> dutyStepsList;
 
     FullPopup_Presenter fullPopup_presenter; //팝업 Presenter
     Popup_Sub_Presenter popup_sub_presenter;
     Popup_View view;
 
     // 받아온 title_name.
-    String duty_Title;
+//    String duty_Title; 기존 내용.
     String duty_titleName;
     // 받아온 title_order
-    int duty_Title_id;
+//    int duty_Title_id; // 기존 내용.
     int duty_titleOrder;
     // 추가 Fab 버튼.
     FloatingActionButton fab;
@@ -115,89 +117,97 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         rv_step_item.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(FullPopupActivity.this);
 
-        //Step1.
-        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep1>> callStep1 = getDataService1.getAllStep1();
+        // 업무 steps 불러오기(read).
+        fullPopup_presenter.getSteps();
+//        if(duty_titleOrder == 1 ) {
+//
+//        }
 
-        callStep1.enqueue(new Callback<List<DutyStep1>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    dutyStep1List = response.body();
-
-//                    dutyStep1List = new ArrayList<>();
-//                    dutyStep1List.addAll(getStep1());
-
-                    if(duty_Title_id == 1){
-                        fullPopup_1_adapter = new FullPopup1_Adapter(getStep1());
-                        rv_step_item.setLayoutManager(linearLayoutManager);
-                        rv_step_item.setAdapter(fullPopup_1_adapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
-
-            }
-        });
-
-        // Step2.
-        GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep2>> callStep2 = getDataService2.getAllStep2();
-
-        callStep2.enqueue(new Callback<List<DutyStep2>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep2>> call, Response<List<DutyStep2>> response) {
-                dutyStep2List = response.body();
-
-
-                if(duty_Title_id == 2) {
-                    fullPopup_2_adapter = new FullPopup2_Adapter(getStep2());
-                    rv_step_item.setLayoutManager(linearLayoutManager);
-                    rv_step_item.setAdapter(fullPopup_2_adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep2>> call, Throwable t) {
-
-            }
-        });
-
-        // step3.
-        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep3>> callStep3 = getDataService3.getAllStep3();
-
-        callStep3.enqueue(new Callback<List<DutyStep3>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep3>> call, Response<List<DutyStep3>> response) {
-                dutyStep3List = response.body();
-
-                if(duty_Title_id == 3) {
-                    fullPopup_3_adapter = new FullPopup3_Adapter(getStep3());
-                    rv_step_item.setLayoutManager(linearLayoutManager);
-                    rv_step_item.setAdapter(fullPopup_3_adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep3>> call, Throwable t) {
-
-            }
-        });
-
+        // DutyStep 추가(Insert)하기.
         fab = findViewById(R.id.add_subItem);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goSub = new Intent(FullPopupActivity.this, Popup_Sub.class);
-                goSub.putExtra("title_id_value",duty_Title_id);
-                startActivity(goSub);
-
+                Intent goStepSub = new Intent(FullPopupActivity.this, Popup_Sub.class);
+//                goSub.putExtra("title_id_value",duty_Title_id); 기존 내용.
+                goStepSub.putExtra("step_name",""); // 얘는 조금 더 확인할 것. 04.02.
+                goStepSub.putExtra("title_order",duty_titleOrder); // 업무 title 순서의 내용을 담는다.
+                startActivity(goStepSub); // intent 값 보내기.
             }
         });
 
+        // DutySteps 불러오기 Read. 기존 내용.
+//        //Step1.
+//        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep1>> callStep1 = getDataService1.getAllStep1();
+//
+//        callStep1.enqueue(new Callback<List<DutyStep1>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    dutyStep1List = response.body();
+//
+////                    dutyStep1List = new ArrayList<>();
+////                    dutyStep1List.addAll(getStep1());
+//
+//                    if(duty_Title_id == 1){
+//                        fullPopup_1_adapter = new FullPopup1_Adapter(getStep1());
+//                        rv_step_item.setLayoutManager(linearLayoutManager);
+//                        rv_step_item.setAdapter(fullPopup_1_adapter);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        // Step2.
+//        GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep2>> callStep2 = getDataService2.getAllStep2();
+//
+//        callStep2.enqueue(new Callback<List<DutyStep2>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep2>> call, Response<List<DutyStep2>> response) {
+//                dutyStep2List = response.body();
+//
+//
+//                if(duty_Title_id == 2) {
+//                    fullPopup_2_adapter = new FullPopup2_Adapter(getStep2());
+//                    rv_step_item.setLayoutManager(linearLayoutManager);
+//                    rv_step_item.setAdapter(fullPopup_2_adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep2>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        // step3.
+//        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep3>> callStep3 = getDataService3.getAllStep3();
+//
+//        callStep3.enqueue(new Callback<List<DutyStep3>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep3>> call, Response<List<DutyStep3>> response) {
+//                dutyStep3List = response.body();
+//
+//                if(duty_Title_id == 3) {
+//                    fullPopup_3_adapter = new FullPopup3_Adapter(getStep3());
+//                    rv_step_item.setLayoutManager(linearLayoutManager);
+//                    rv_step_item.setAdapter(fullPopup_3_adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep3>> call, Throwable t) {
+//
+//            }
+//        });
 
 
 //        Intent editStep = getIntent();
@@ -224,86 +234,78 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         rv_step_item.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(FullPopupActivity.this);
 
-        //Step1.
-        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep1>> callStep1 = getDataService1.getAllStep1();
-
-        callStep1.enqueue(new Callback<List<DutyStep1>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    dutyStep1List = response.body();
-
-                    if(duty_Title_id == 1){
-                        fullPopup_1_adapter = new FullPopup1_Adapter(getStep1());
-                        rv_step_item.setLayoutManager(linearLayoutManager);
-                        rv_step_item.setAdapter(fullPopup_1_adapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
-
-            }
-        });
-
-        // Step2.
-        GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep2>> callStep2 = getDataService2.getAllStep2();
-
-        callStep2.enqueue(new Callback<List<DutyStep2>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep2>> call, Response<List<DutyStep2>> response) {
-                dutyStep2List = response.body();
 
 
-                if(duty_Title_id == 2) {
-                    fullPopup_2_adapter = new FullPopup2_Adapter(getStep2());
-                    rv_step_item.setLayoutManager(linearLayoutManager);
-                    rv_step_item.setAdapter(fullPopup_2_adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep2>> call, Throwable t) {
-
-            }
-        });
-
-        // step3.
-        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep3>> callStep3 = getDataService3.getAllStep3();
-
-        callStep3.enqueue(new Callback<List<DutyStep3>>() {
-            @Override
-            public void onResponse(Call<List<DutyStep3>> call, Response<List<DutyStep3>> response) {
-                dutyStep3List = response.body();
-
-                if(duty_Title_id == 3) {
-                    fullPopup_3_adapter = new FullPopup3_Adapter(getStep3());
-                    rv_step_item.setLayoutManager(linearLayoutManager);
-                    rv_step_item.setAdapter(fullPopup_3_adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DutyStep3>> call, Throwable t) {
-
-            }
-        });
-
-
-//        fab = findViewById(R.id.add_subItem);
-//        fab.setOnClickListener(new View.OnClickListener() {
+        // 기존 Step1, Step2, Step3 불러오는 내용.
+//        //Step1.
+//        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep1>> callStep1 = getDataService1.getAllStep1();
+//
+//        callStep1.enqueue(new Callback<List<DutyStep1>>() {
 //            @Override
-//            public void onClick(View v) {
-//                Intent goSub = new Intent(FullPopupActivity.this, Popup_Sub.class);
-//                goSub.putExtra("title_id_value",duty_Title_id);
-//                startActivity(goSub);
+//            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    dutyStep1List = response.body();
+//
+//                    if(duty_Title_id == 1){
+//                        fullPopup_1_adapter = new FullPopup1_Adapter(getStep1());
+//                        rv_step_item.setLayoutManager(linearLayoutManager);
+//                        rv_step_item.setAdapter(fullPopup_1_adapter);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
 //
 //            }
 //        });
+//
+//        // Step2.
+//        GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep2>> callStep2 = getDataService2.getAllStep2();
+//
+//        callStep2.enqueue(new Callback<List<DutyStep2>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep2>> call, Response<List<DutyStep2>> response) {
+//                dutyStep2List = response.body();
+//
+//
+//                if(duty_Title_id == 2) {
+//                    fullPopup_2_adapter = new FullPopup2_Adapter(getStep2());
+//                    rv_step_item.setLayoutManager(linearLayoutManager);
+//                    rv_step_item.setAdapter(fullPopup_2_adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep2>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        // step3.
+//        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep3>> callStep3 = getDataService3.getAllStep3();
+//
+//        callStep3.enqueue(new Callback<List<DutyStep3>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep3>> call, Response<List<DutyStep3>> response) {
+//                dutyStep3List = response.body();
+//
+//                if(duty_Title_id == 3) {
+//                    fullPopup_3_adapter = new FullPopup3_Adapter(getStep3());
+//                    rv_step_item.setLayoutManager(linearLayoutManager);
+//                    rv_step_item.setAdapter(fullPopup_3_adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep3>> call, Throwable t) {
+//
+//            }
+//        });
+
     }
 
 
@@ -317,9 +319,10 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         Toast.makeText(FullPopupActivity.this, "실패", Toast.LENGTH_SHORT).show();
     }
 
+    // 업무 step 수정(update)하기.
     @Override
     public void onGetResult(List<DutyStep> dutyStepList) {
-// 아이템 클릭 리스너(데이터 수정)
+        // 아이템 클릭 리스너(데이터 수정)
         itemClickListener = ((view, position) -> {
 
             // 아이템 클릭 시 -> Intent로 팝업창으로 보내기.

@@ -1,12 +1,11 @@
 package com.personal.re_double_rv.Activity.main;
 
-import com.personal.re_double_rv.Retrofit.ApiRetroData;
+import com.personal.re_double_rv.Retrofit.DutyTitle.ApiRetroDataTitle;
 import com.personal.re_double_rv.Retrofit.GetDataService;
-import com.personal.re_double_rv.Retrofit.RetrofitClient;
+import com.personal.re_double_rv.Retrofit.DutyTitle.RetrofitClientTitle;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyFile;
 import com.personal.re_double_rv.models.DutyStep;
-import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyTitle;
 
 import java.util.List;
@@ -51,7 +50,7 @@ public class Main_Presenter {
 //    }
     // DB에 저장된 Duty_Title의 데이터 가져오기.
     void getDutyTitle() {
-        ApiRetroData getDutyTitles = RetrofitClient.getRetrofitClient().create(ApiRetroData.class);
+        ApiRetroDataTitle getDutyTitles = RetrofitClientTitle.getRetrofitClient().create(ApiRetroDataTitle.class);
         Call<List<DutyTitle>> callDutyTitles = getDutyTitles.readAllTitles();
 
         callDutyTitles.enqueue(new Callback<List<DutyTitle>>() {
