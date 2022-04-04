@@ -30,7 +30,7 @@ public interface ApiRetroDataStep {
     @GET("dutyStep_read.php") // List 형태로 steps 전부 불러오기.
     Call<List<DutySteps>> readAllSteps();
 
-    // 업무 Step1List 읽기(read)
+    // 업무 Step1List 읽기(read) -> title_order 값이 "1"인 것만 불러냄.
     @GET("dutyStep_step1List.php") // step1List만 따로 불러냄.
     Call<List<DutySteps1>> readAllSteps1(); // title_order 가 "1"인 얘들만 모아서 하나의 리스트를 만든다.
 

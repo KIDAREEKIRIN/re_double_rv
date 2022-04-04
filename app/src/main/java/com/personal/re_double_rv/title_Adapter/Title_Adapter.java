@@ -31,6 +31,8 @@ import com.personal.re_double_rv.Activity.main.MainActivity;
 import com.personal.re_double_rv.Activity.main.Main_Presenter;
 import com.personal.re_double_rv.Activity.main.Main_View;
 import com.personal.re_double_rv.R;
+import com.personal.re_double_rv.Retrofit.DutyStep.ApiRetroDataStep;
+import com.personal.re_double_rv.Retrofit.DutyStep.RetrofitClientStep;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyStep;
@@ -38,10 +40,12 @@ import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
 import com.personal.re_double_rv.models.DutySteps;
+import com.personal.re_double_rv.models.DutySteps1;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Step1_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step2_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step3_Adapter;
+import com.personal.re_double_rv.steps_Adapter.Steps1_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,7 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
     // 새롭게 추가하는 내용. 04.02.
     List<DutySteps> dutyStepsList; // steps 리스트에 들어갈 리스트.
+    List<DutySteps1> dutySteps1List; // Steps1 리스트.
 
     private Context title_Adapter_Context; // Context 선언.
     LinearLayoutManager linearLayoutManager; // LinearLayoutManager 선언.
@@ -222,37 +227,66 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
             }
         });
 
+        // DutySteps1에 대한 내용. 04.04.(새롭게 추가)
+        ApiRetroDataStep getSteps1 = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
+        Call<List<DutySteps1>> callSteps1 = getSteps1.readAllSteps1();
 
-
-        // DutyStep1에 대한 내용.
-        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<DutyStep1>> callStep1 = getDataService.getAllStep1();
-
-        callStep1.enqueue(new Callback<List<DutyStep1>>() {
+        callSteps1.enqueue(new Callback<List<DutySteps1>>() {
             @Override
-            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    dutyStep1List = response.body();
-                    // 자식 레이아웃 설정.
+            public void onResponse(Call<List<DutySteps1>> call, Response<List<DutySteps1>> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    dutySteps1List = response.body();
+
                     linearLayoutManager = new LinearLayoutManager(
                             holder.rv_step_item.getContext(),
                             LinearLayoutManager.VERTICAL,
                             false
                     );
-                    // 시기별 업무 올리기.
-                    if(dutyTitle.getTitle_id() == 1) {
-                        Step1_Adapter step1_adapter = new Step1_Adapter(getStep1());
+                    // 시기별 업무 올리기 title_order = "1" 일 때,
+                    if(dutyTitle.getTitle_order() == 1) {
+                        Steps1_Adapter steps1_adapter = new Steps1_Adapter(getSteps1());
                         holder.rv_step_item.setLayoutManager(linearLayoutManager);
-                        holder.rv_step_item.setAdapter(step1_adapter);
+                        holder.rv_step_item.setAdapter(steps1_adapter);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
+            public void onFailure(Call<List<DutySteps1>> call, Throwable t) {
 
             }
         });
+
+
+        // DutyStep1에 대한 내용.
+//        GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<List<DutyStep1>> callStep1 = getDataService.getAllStep1();
+//
+//        callStep1.enqueue(new Callback<List<DutyStep1>>() {
+//            @Override
+//            public void onResponse(Call<List<DutyStep1>> call, Response<List<DutyStep1>> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    dutyStep1List = response.body();
+//                    // 자식 레이아웃 설정.
+//                    linearLayoutManager = new LinearLayoutManager(
+//                            holder.rv_step_item.getContext(),
+//                            LinearLayoutManager.VERTICAL,
+//                            false
+//                    );
+//                    // 시기별 업무 올리기.
+//                    if(dutyTitle.getTitle_id() == 1) {
+//                        Step1_Adapter step1_adapter = new Step1_Adapter(getStep1());
+//                        holder.rv_step_item.setLayoutManager(linearLayoutManager);
+//                        holder.rv_step_item.setAdapter(step1_adapter);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DutyStep1>> call, Throwable t) {
+//
+//            }
+//        });
 
         // step2에 대한 내용.
         GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -343,6 +377,16 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
 
     // 첫번째 메인 액티비티 리사이클러뷰 안의 카드뷰 안에 들어갈 리스트.
+
+    // 변동되는 값 Steps1.
+    private List<DutySteps1> getSteps1() {
+        List<DutySteps1> steps1List = new ArrayList<>();
+        for(int i=0; i < dutySteps1List.size(); i++) {
+            steps1List.add(i,dutySteps1List.get(i));
+        }
+        return steps1List;
+    }
+
     // Step1.
     private List<DutyStep1> getStep1() {
         List<DutyStep1> step1List = new ArrayList<>();
