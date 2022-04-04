@@ -20,10 +20,13 @@ import com.personal.re_double_rv.Activity.Popup_Sub.Popup_Sub_Presenter;
 import com.personal.re_double_rv.Activity.Popup_Sub.Popup_View;
 import com.personal.re_double_rv.Activity.editor.Popup_Activity;
 import com.personal.re_double_rv.Activity.main.MainActivity;
+import com.personal.re_double_rv.Popup_Adapter.FullPop1_Adapter;
 import com.personal.re_double_rv.Popup_Adapter.FullPopup1_Adapter;
 import com.personal.re_double_rv.Popup_Adapter.FullPopup2_Adapter;
 import com.personal.re_double_rv.Popup_Adapter.FullPopup3_Adapter;
 import com.personal.re_double_rv.R;
+import com.personal.re_double_rv.Retrofit.DutyStep.ApiRetroDataStep;
+import com.personal.re_double_rv.Retrofit.DutyStep.RetrofitClientStep;
 import com.personal.re_double_rv.Retrofit.GetDataService;
 import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyStep;
@@ -31,10 +34,12 @@ import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
 import com.personal.re_double_rv.models.DutyStep3;
 import com.personal.re_double_rv.models.DutySteps;
+import com.personal.re_double_rv.models.DutySteps1;
 import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Steps_Adapter;
 import com.personal.re_double_rv.title_Adapter.ItemClickListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +61,14 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
     LinearLayoutManager linearLayoutManager;// 리니어 레이아웃 그리기.
 
+    // 기존의 어댑터들.
     Steps_Adapter steps_adapter; // Steps 어댑터.
     FullPopup1_Adapter fullPopup_1_adapter; // step1 어댑터
     FullPopup2_Adapter fullPopup_2_adapter; // step2 어댑터
     FullPopup3_Adapter fullPopup_3_adapter; // step3 어댑터
+
+    // 새로운 어댑터.
+    FullPop1_Adapter fullPop1_adapter;
 
     // Title + Step 리스트.
     List<DutyTitle> dutyTitleList;
@@ -68,6 +77,10 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
     List<DutyStep2> dutyStep2List;
     List<DutyStep3> dutyStep3List;
     List<DutySteps> dutyStepsList;
+    // 기존것들.
+
+    // 새로운 리스트.
+    List<DutySteps1> dutySteps1List;
 
     FullPopup_Presenter fullPopup_presenter; //팝업 Presenter
     Popup_Sub_Presenter popup_sub_presenter;
@@ -118,10 +131,8 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         linearLayoutManager = new LinearLayoutManager(FullPopupActivity.this);
 
         // 업무 steps 불러오기(read).
-        fullPopup_presenter.getSteps();
-//        if(duty_titleOrder == 1 ) {
-//
-//        }
+//        fullPopup_presenter.getAllSteps();
+
 
         // DutyStep 추가(Insert)하기.
         fab = findViewById(R.id.add_subItem);
@@ -136,6 +147,36 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
             }
         });
 
+        // DutySteps1 불러오기. Read
+        // Step1.
+        ApiRetroDataStep getDataSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
+        Call<List<DutySteps1>> callSteps1 = getDataSteps.readAllSteps1(); // 해당 데이터를 전부 읽는다.
+
+        callSteps1.enqueue(new Callback<List<DutySteps1>>() {
+            @Override
+            public void onResponse(Call<List<DutySteps1>> call, Response<List<DutySteps1>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    dutySteps1List = response.body();
+
+//                    dutySteps1List = new ArrayList<>();
+//                    dutySteps1List.addAll(getSteps1()); // 형변환을 해줌. 그냥 getSteps1()을 사용하면 안됨.
+
+                    // duty_titleName 업무 title 이름이 "시기 확인" 이면?
+                    if(duty_titleOrder == 1) {
+                        // 새로운 FullPopup_Activity 달기.
+//                        fullPop1_adapter = new FullPop1_Adapter(getSteps1())
+                        fullPop1_adapter = new FullPop1_Adapter(getSteps1());
+                        rv_step_item.setLayoutManager(linearLayoutManager);
+                        rv_step_item.setAdapter(fullPop1_adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutySteps1>> call, Throwable t) {
+
+            }
+        });
         // DutySteps 불러오기 Read. 기존 내용.
 //        //Step1.
 //        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -236,6 +277,35 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
 
 
+        // Step1.
+        ApiRetroDataStep getDataSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
+        Call<List<DutySteps1>> callSteps1 = getDataSteps.readAllSteps1(); // 해당 데이터를 전부 읽는다.
+
+        callSteps1.enqueue(new Callback<List<DutySteps1>>() {
+            @Override
+            public void onResponse(Call<List<DutySteps1>> call, Response<List<DutySteps1>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    dutySteps1List = response.body();
+
+//                    dutySteps1List = new ArrayList<>();
+//                    dutySteps1List.addAll(getSteps1()); // 형변환을 해줌. 그냥 getSteps1()을 사용하면 안됨.
+
+                    // duty_titleName 업무 title 이름이 "시기 확인" 이면? 첫 시도.
+                    // duty_titleOrder 업무 title 순서의 "1"이면?
+                    if(duty_titleOrder == 1) {
+                        // 새로운 FullPopup_Activity 달기.
+                        fullPop1_adapter = new FullPop1_Adapter(getSteps1());
+                        rv_step_item.setLayoutManager(linearLayoutManager);
+                        rv_step_item.setAdapter(fullPop1_adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutySteps1>> call, Throwable t) {
+
+            }
+        });
         // 기존 Step1, Step2, Step3 불러오는 내용.
 //        //Step1.
 //        GetDataService getDataService1 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -361,7 +431,14 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
 
     }
-
+    // 새롭게 만든 DutySteps1 에 대한 리스트. 04.04.
+    public List<DutySteps1> getSteps1() {
+        List<DutySteps1> steps1List = new ArrayList<>();
+        for ( int i = 0; i < dutySteps1List.size(); i++ ) {
+            steps1List.add(i,dutySteps1List.get(i));
+        }
+        return steps1List;
+    }
 
     public List<DutyStep> getSteps() {
         List<DutyStep> stepList = new ArrayList<>();
@@ -378,6 +455,7 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         }
         return step1List;
     }
+
     public List<DutyStep2> getStep2() {
         List<DutyStep2> step2List = new ArrayList<>();
         for (int i = 0; i < dutyStep2List.size(); i++){

@@ -48,7 +48,7 @@ public class FullPopup_Presenter {
     }
 
     // 업무 steps 불러오기(read).
-    void getSteps() {
+    void getAllSteps() {
         ApiRetroDataStep getDataSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
         Call<List<DutySteps>> callReadSteps = getDataSteps.readAllSteps(); // steps 전부 불러오기.
 
