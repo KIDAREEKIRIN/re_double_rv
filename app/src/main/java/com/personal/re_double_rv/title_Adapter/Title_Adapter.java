@@ -46,6 +46,7 @@ import com.personal.re_double_rv.steps_Adapter.Step1_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step2_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Step3_Adapter;
 import com.personal.re_double_rv.steps_Adapter.Steps1_Adapter;
+import com.personal.re_double_rv.steps_Adapter.Steps_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ import retrofit2.Response;
 
 public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewHolder> implements Editor_View, Main_View{
 
+    // 기존의 내용. ~04.02)
     List<DutyTitle> dutyTitleList; // 메인 액티비티 리사이클러뷰에 들어갈 리스트.
     List<DutyStep1> dutyStep1List; // step1 리스트에 들어갈 리스트.
     List<DutyStep2> dutyStep2List; // step2 리스트에 들어갈 리스트.
@@ -67,6 +69,9 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
     private Context title_Adapter_Context; // Context 선언.
     LinearLayoutManager linearLayoutManager; // LinearLayoutManager 선언.
+
+    // 어댑터 선언.
+    Step3_Adapter step3_adapter;
 
     // 아이템 클릭 리스너.
     ItemClickListener itemClickListener;
@@ -227,6 +232,42 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
             }
         });
 
+        // DutySteps에 대한 내용. 04.05. (하나의 어댑터로 리사이클러뷰 재사용).
+        // 1. 레트로핏 통신
+        ApiRetroDataStep getSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
+        Call<List<DutySteps>> callSteps = getSteps.readAllSteps(); // 모든 업무 Steps 를 가져온다.
+
+        callSteps.enqueue(new Callback<List<DutySteps>>() {
+            @Override
+            public void onResponse(Call<List<DutySteps>> call, Response<List<DutySteps>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    dutyStepsList = response.body();
+
+                    linearLayoutManager = new LinearLayoutManager(
+                            holder.rv_step_item.getContext(),
+                            LinearLayoutManager.VERTICAL,
+                            false
+                    );
+
+                    // 만약 업무 title_order 와 상관없이 모든 데이터 붙이기.
+                    Steps_Adapter steps_adapter = new Steps_Adapter(getSteps(),title_Adapter_Context);
+                    holder.rv_step_item.setLayoutManager(linearLayoutManager);
+                    holder.rv_step_item.setAdapter(steps_adapter);
+//
+//                    if(dutyTitle.getTitle_order() == 1) {
+//                    } else {
+//                        holder.rv_step_item.setLayoutManager(linearLayoutManager);
+//                        holder.rv_step_item.setAdapter(step3_adapter);
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DutySteps>> call, Throwable t) {
+
+            }
+        });
+
         // DutySteps1에 대한 내용. 04.04.(새롭게 추가)
         ApiRetroDataStep getSteps1 = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
         Call<List<DutySteps1>> callSteps1 = getSteps1.readAllSteps1();
@@ -377,6 +418,15 @@ public class Title_Adapter extends RecyclerView.Adapter<Title_Adapter.TitleViewH
 
 
     // 첫번째 메인 액티비티 리사이클러뷰 안의 카드뷰 안에 들어갈 리스트.
+
+    // 업무 Steps 값 불러오기.
+    private List<DutySteps> getSteps() {
+        List<DutySteps> stepsList = new ArrayList<>();
+        for(int i = 0; i < dutyStepsList.size(); i++) {
+            stepsList.add(i,dutyStepsList.get(i));
+        }
+        return stepsList;
+    }
 
     // 변동되는 값 Steps1.
     private List<DutySteps1> getSteps1() {

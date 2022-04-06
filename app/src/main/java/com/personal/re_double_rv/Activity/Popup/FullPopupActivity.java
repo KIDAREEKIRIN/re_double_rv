@@ -1,11 +1,11 @@
 package com.personal.re_double_rv.Activity.Popup;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.personal.re_double_rv.Activity.Popup_Sub.Popup_Sub;
 import com.personal.re_double_rv.Activity.Popup_Sub.Popup_Sub_Presenter;
 import com.personal.re_double_rv.Activity.Popup_Sub.Popup_View;
-import com.personal.re_double_rv.Activity.editor.Popup_Activity;
-import com.personal.re_double_rv.Activity.main.MainActivity;
 import com.personal.re_double_rv.Popup_Adapter.FullPop1_Adapter;
 import com.personal.re_double_rv.Popup_Adapter.FullPopup1_Adapter;
 import com.personal.re_double_rv.Popup_Adapter.FullPopup2_Adapter;
@@ -27,8 +25,6 @@ import com.personal.re_double_rv.Popup_Adapter.FullPopup3_Adapter;
 import com.personal.re_double_rv.R;
 import com.personal.re_double_rv.Retrofit.DutyStep.ApiRetroDataStep;
 import com.personal.re_double_rv.Retrofit.DutyStep.RetrofitClientStep;
-import com.personal.re_double_rv.Retrofit.GetDataService;
-import com.personal.re_double_rv.Retrofit.RetrofitClientInstance;
 import com.personal.re_double_rv.models.DutyStep;
 import com.personal.re_double_rv.models.DutyStep1;
 import com.personal.re_double_rv.models.DutyStep2;
@@ -39,7 +35,6 @@ import com.personal.re_double_rv.models.DutyTitle;
 import com.personal.re_double_rv.steps_Adapter.Steps_Adapter;
 import com.personal.re_double_rv.title_Adapter.ItemClickListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +55,7 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
     RecyclerView rv_step_item;// 리사이클러뷰
 
     LinearLayoutManager linearLayoutManager;// 리니어 레이아웃 그리기.
+    Context fullPopup_context;
 
     // 기존의 어댑터들.
     Steps_Adapter steps_adapter; // Steps 어댑터.
@@ -72,7 +68,7 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
     // Title + Step 리스트.
     List<DutyTitle> dutyTitleList;
-    List<DutyStep> dutyStepList;
+//    List<DutyStep> dutyStepList;
     List<DutyStep1> dutyStep1List;
     List<DutyStep2> dutyStep2List;
     List<DutyStep3> dutyStep3List;
@@ -275,8 +271,6 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         rv_step_item.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(FullPopupActivity.this);
 
-
-
         // Step1.
         ApiRetroDataStep getDataSteps = RetrofitClientStep.getRetrofitClient().create(ApiRetroDataStep.class);
         Call<List<DutySteps1>> callSteps1 = getDataSteps.readAllSteps1(); // 해당 데이터를 전부 읽는다.
@@ -411,7 +405,8 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
 
         });
 
-        steps_adapter = new Steps_Adapter(getSteps()); // 전체 단계를 다 불러옴. -> 이 녀석을 쪼개야함.
+//        steps_adapter = new Steps_Adapter(getSteps1());
+        steps_adapter = new Steps_Adapter(getSteps(),fullPopup_context); // 전체 단계를 다 불러옴. -> 이 녀석을 쪼개야함.
         rv_step_item.setLayoutManager(linearLayoutManager);
         rv_step_item.setAdapter(steps_adapter);
 
@@ -440,12 +435,13 @@ public class FullPopupActivity extends AppCompatActivity implements FullPopup_Vi
         return steps1List;
     }
 
-    public List<DutyStep> getSteps() {
-        List<DutyStep> stepList = new ArrayList<>();
-        for (int i = 0; i < dutyStepList.size() ; i++){
-            stepList.add(i,dutyStepList.get(i));
+    // 전체 업무 Step 리스트 만들기.
+    public List<DutySteps> getSteps() {
+        List<DutySteps> stepsList = new ArrayList<>();
+        for (int i = 0; i < dutyStepsList.size() ; i++){
+            stepsList.add(i,dutyStepsList.get(i));
         }
-        return stepList;
+        return stepsList;
     }
 
     public List<DutyStep1> getStep1() {

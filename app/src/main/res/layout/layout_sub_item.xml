@@ -30,19 +30,19 @@
                     android:layout_margin="2dp"
                     android:layout_weight="8"
                     android:checked="false"
-                    android:gravity="center"
                     android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
                     android:text="Sub item title"
                     android:textStyle="bold" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_sub_step"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_margin="2dp"-->
-<!--                    android:layout_weight="8"-->
-<!--                    android:text="Sub item title"-->
-<!--                    android:textStyle="bold" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_sub_step"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_margin="2dp"-->
+                <!--                    android:layout_weight="8"-->
+                <!--                    android:text="Sub item title"-->
+                <!--                    android:textStyle="bold" />-->
 
                 <ImageButton
                     android:id="@+id/ib_file"
@@ -50,9 +50,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:src="@drawable/ic_file"
                     android:scaleType="fitCenter"
-                    />
+                    android:src="@drawable/ic_file" />
+
                 <ImageButton
                     android:id="@+id/ib_tip"
                     android:layout_width="20dp"

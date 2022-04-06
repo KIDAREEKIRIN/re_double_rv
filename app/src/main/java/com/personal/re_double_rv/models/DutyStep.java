@@ -11,7 +11,7 @@ public class DutyStep {
 
     @SerializedName("step") private String step;
 
-    @SerializedName("title_id") private int title_id;
+    @SerializedName("title_id") private int title_id; // title_order.
 
     //Checkbox
     @SerializedName("check_boolean") private int check_boolean;
